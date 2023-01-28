@@ -3,6 +3,11 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# .gitignore file for OttBlog23
+
+# ignore appsettings.json file
+appsettings.json
+
 # User-specific files
 *.rsuser
 *.suo
@@ -59,7 +64,6 @@ dlldata.c
 BenchmarkDotNet.Artifacts/
 
 # .NET Core
-appsettings.json
 project.lock.json
 project.fragment.lock.json
 artifacts/
