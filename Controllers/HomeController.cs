@@ -4,17 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using OttBlog23.Services.Interfaces;
-using OttBlog23.Services;
-using MailKit.Security;
-using MimeKit;
-using MailKit.Net.Smtp;
 using OttBlog23.Data;
 using Microsoft.AspNetCore.Identity;
-using OttBlog23.Models;
-using OttBlog23.Data;
 using System.Threading.Tasks;
-using OttBlog23.ViewModels;
-using OttBlog23.Services.Interfaces;
 
 namespace OttBlog23.Controllers
 {

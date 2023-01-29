@@ -17,11 +17,9 @@ namespace OttBlog23
         public static async Task Main(string[] args)
         {
 
-            //CreateHostBuilder(args).Build().Run();
             var host = CreateHostBuilder(args).UseContentRoot(Directory.GetCurrentDirectory()).Build();
 
-            
-            //get registered data service
+
             var dataService = host.Services.CreateScope().ServiceProvider
                                            .GetRequiredService<DataService>();
 
