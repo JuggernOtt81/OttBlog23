@@ -10,8 +10,8 @@ using OttBlog23.Data;
 namespace OttBlog23.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230128162652_002")]
-    partial class _002
+    [Migration("20230129081934_009")]
+    partial class _009
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
