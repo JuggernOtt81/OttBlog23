@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,28 +20,28 @@ namespace OttBlog23.Controllers
         {
             _context = context;
         }
-
+        [Authorize]
         // GET: ALL ORIGINAL Comments
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
             return View(await applicationDbContext.ToListAsync());
         }
-
+        [Authorize]
         //GET: MODERATED Comments
         public async Task<IActionResult> ModeratedIndex()
         {
             var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
             return View(await applicationDbContext.ToListAsync());
         }
-
+        [Authorize]
         //GET: DELETED Comments
         public async Task<IActionResult> DeletedIndex()
         {
             var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
             return View(await applicationDbContext.ToListAsync());
         }
-
+        [Authorize]
         // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -61,7 +62,7 @@ namespace OttBlog23.Controllers
 
             return View(comment);
         }
-
+        [Authorize]
         // GET: Comments/Create
         public IActionResult Create()
         {
@@ -119,7 +120,7 @@ namespace OttBlog23.Controllers
             //ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", comment.PostId);
             //return View(comment);
         }
-
+        [Authorize]
         // GET: Comments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -177,7 +178,7 @@ namespace OttBlog23.Controllers
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", comment.PostId);
             return View(comment);
         }
-
+        [Authorize]
         // GET: Comments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

@@ -1,6 +1,7 @@
 ﻿@using OttBlog23.ViewModels
 @model ContactMe
-
+@using Syncfusion;
+@Html.EJS().ScriptManager()
 <div class="container">
     <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
@@ -63,8 +64,12 @@
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
+
                 <br>
+
+
                 <div id="success"></div>
+
                 <button type="submit" class="btn btn-primary" id="sendMessageButton">Send</button>
             </form>
         </div>
@@ -72,14 +77,5 @@
 </div>
 
 @section Scripts{
-
-    <script>
-        //Default font size but not for placeholder...
-        $('#Message').summernote({
-            placeholder: "We would like to hire you for an upcoming project. Are you interested?"
-        });
-    </script>
-
-
 
 }

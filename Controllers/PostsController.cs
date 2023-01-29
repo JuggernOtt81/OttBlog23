@@ -58,7 +58,7 @@ namespace OttBlog23.Controllers
 
             return View(post);
         }
-
+        [Authorize]
         // GET: Posts/Create
         public IActionResult Create()
         {
@@ -102,7 +102,7 @@ namespace OttBlog23.Controllers
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             return View(post);
         }
-
+        [Authorize]
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -158,7 +158,7 @@ namespace OttBlog23.Controllers
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", post.BlogUserId);
             return View(post);
         }
-
+        [Authorize]
         // GET: Posts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

@@ -7,6 +7,10 @@ using OttBlog23.Services.Interfaces;
 using OttBlog23.Data;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 
 namespace OttBlog23.Controllers
 {
@@ -26,8 +30,12 @@ namespace OttBlog23.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public ActionResult Index()
         {
+            ViewBag.resources = new
+            {
+                styles = new[] { "myStyle.css" }
+            };
             return View();
         }
 
@@ -38,6 +46,24 @@ namespace OttBlog23.Controllers
 
         public IActionResult Contact()
         {
+            ViewBag.items = new[] { "Bold", "Italic", "Underline",
+            "Formats", "Alignments", "-", "OrderedList", "UnorderedList", "Image",
+             "CreateLink" };
+            object tools1 = new
+            {
+                tooltipText = "Rotate Left",
+                template = "<button class='e-tbar-btn e-btn' id='roatateLeft'><span class='e-btn-icon e-icons e-rotate-left'></span>"
+            };
+            object tools2 = new
+            {
+                tooltipText = "Rotate Right",
+                template = "<button class='e-tbar-btn e-btn' id='roatateRight'><span class='e-btn-icon e-icons e-rotate-right'></span>"
+            };
+            ViewBag.image = new[] {
+            "Replace", "Align", "Caption", "Remove", "InsertLink", "OpenImageLink", "-",
+             "EditImageLink", "RemoveImageLink", "Display", "AltText", "Dimension",tools1
+             , tools2
+             };
             return View();
         }
 
@@ -58,7 +84,13 @@ namespace OttBlog23.Controllers
             }
             return View(model);
         }
-
+        public partial class RichTextEditorController : Controller
+        {
+            public ActionResult DefaultFunctionalities()
+            {
+                return View();
+            }
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

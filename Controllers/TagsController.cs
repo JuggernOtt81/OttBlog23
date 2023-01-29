@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,7 @@ namespace OttBlog23.Controllers
         {
             _context = context;
         }
-
+        [Authorize]
         // GET: Tags
         public async Task<IActionResult> Index()
         {
@@ -45,7 +46,7 @@ namespace OttBlog23.Controllers
 
             return View(tag);
         }
-
+        [Authorize]
         // GET: Tags/Create
         public IActionResult Create()
         {
@@ -74,7 +75,7 @@ namespace OttBlog23.Controllers
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", tag.PostId);
             return View(tag);
         }
-
+        [Authorize]
         // GET: Tags/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -129,7 +130,7 @@ namespace OttBlog23.Controllers
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", tag.PostId);
             return View(tag);
         }
-
+        [Authorize]
         // GET: Tags/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
