@@ -76,6 +76,14 @@
     </div>
 </div>
 
-@section Scripts{
+@section Scripts {
+            <script>
+                $('#Message').summernote({
+                    placeholder: "We would like to hire you for an exciting new project!"
+                });
+            </script>
 
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
