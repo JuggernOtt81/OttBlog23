@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using OttBlog23.Models;
+using OttBlog23.Services.Interfaces;
 
 namespace OttBlog23.Areas.Identity.Pages.Account
 {
@@ -14,9 +15,9 @@ namespace OttBlog23.Areas.Identity.Pages.Account
     public class RegisterConfirmationModel : PageModel
     {
         private readonly UserManager<BlogUser> _userManager;
-        private readonly IEmailSender _sender;
+        private readonly IBlogEmailSender _sender;
 
-        public RegisterConfirmationModel(UserManager<BlogUser> userManager, IEmailSender sender)
+        public RegisterConfirmationModel(UserManager<BlogUser> userManager, IBlogEmailSender sender)
         {
             _userManager = userManager;
             _sender = sender;
@@ -43,7 +44,7 @@ namespace OttBlog23.Areas.Identity.Pages.Account
 
             Email = email;
             // Once you add a real email sender, you should remove this code that lets you confirm the account
-            DisplayConfirmAccountLink = true;
+            //DisplayConfirmAccountLink = true;
             if (DisplayConfirmAccountLink)
             {
                 var userId = await _userManager.GetUserIdAsync(user);
