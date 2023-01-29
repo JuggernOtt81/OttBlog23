@@ -11,6 +11,7 @@ using OttBlog23.Services.Interfaces;
 using OttBlog23.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace OttBlog23.Controllers
 {
@@ -26,7 +27,7 @@ namespace OttBlog23.Controllers
             _imageService = imageService;
             _context = context;
         }
-        
+
         // GET: Blogs
         public async Task<IActionResult> Index()
         {
@@ -103,7 +104,7 @@ namespace OttBlog23.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Image")] Blog blog)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Blog blog, IFormFile newImage)
         {
             if (id != blog.Id)
             {
@@ -115,7 +116,22 @@ namespace OttBlog23.Controllers
                 blog.Updated = DateTime.Now.ToUniversalTime();
                 try
                 {
-                    _context.Update(blog);
+                    var newBlog = await _context.Blogs.FindAsync(blog.Id);
+                    if (newBlog.Name != blog.Name)
+                    {
+                        newBlog.Name = blog.Name;
+                    };
+                    if (newBlog.Description != blog.Description)
+                    {
+                        newBlog.Description = blog.Description;
+                    };
+                    newBlog.Updated = DateTime.Now.ToUniversalTime();
+                    if (newImage != null)
+                    {
+                        newBlog.ImageData = await _imageService.EncodeImageAsync(newImage);
+                        newBlog.ContentType = _imageService.ContentType(newImage);
+                    };
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

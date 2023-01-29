@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OttBlog23.Data;
 using OttBlog23.Models;
+using OttBlog23.Services;
 using OttBlog23.Services.Interfaces;
 
 namespace OttBlog23.Controllers
@@ -126,7 +129,7 @@ namespace OttBlog23.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,BlogUserId,Title,Abstract,Content,Created,Updated,ReadyStatus,Slug,ImageData,ContentType")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Title,Abstract,Content,ReadyStatus,Slug")] Post post, IFormFile newImage)
         {
             if (id != post.Id)
             {
@@ -138,7 +141,30 @@ namespace OttBlog23.Controllers
                 post.Updated = DateTime.Now.ToUniversalTime();
                 try
                 {
-                    _context.Update(post);
+                    var newPost = await _context.Posts.FindAsync(post.Id);
+                    if (newPost.Title != post.Title)
+                    {
+                        newPost.Title= post.Title;
+                    };
+                    if (newPost.Abstract != post.Abstract)
+                    {
+                        newPost.Abstract = post.Abstract;
+                    };
+                    if (newPost.Content != post.Content)
+                    {
+                        newPost.Content = post.Content;
+                    }
+                    if (newPost.ReadyStatus!= post.ReadyStatus)
+                    {
+                        newPost.ReadyStatus = post.ReadyStatus;
+                    }
+                    newPost.Updated = DateTime.Now.ToUniversalTime();
+                    if (newImage != null)
+                    {
+                        newPost.ImageData = await _imageService.EncodeImageAsync(newImage);
+                        post.ContentType = _imageService.ContentType(newImage);
+                    };
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
