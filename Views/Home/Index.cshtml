@@ -75,19 +75,7 @@
     <hr />
     See my work samples here: <a href="https://www.JuggernOtt81.com" target="_blank">www.JuggernOtt81.com</a>
 </p>
-
-@Html.EJS().RichTextEditor("iframe").ContentTemplate(@<div style="width:600px">
-        <p>
-            The Rich Text Editor control is WYSIWYG ('what you see is what you get') editor that provides the best user experience to create and update the content.
-            Users can format their content using standard toolbar commands.
-        </p>
-        <p><b> Key features:</b></p>
-        <ul>
-            <li><p> Provides &lt; IFRAME &gt; and &lt; DIV &gt; modes </p></li>
-            <li><p> Capable of handling markdown editing.</p></li>
-        </ul>
-    </div>).Created("created").IframeSettings(iframeSettings => iframeSettings.Enable(true)).Render()
-<script>
+@*<script>
     function created() {
         this.setProperties({
             iframeSettings: {
@@ -97,4 +85,4 @@
             }
         }, false);
     }
-</script>
+</script>*@

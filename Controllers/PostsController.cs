@@ -79,6 +79,8 @@ namespace OttBlog23.Controllers
         {
             if (ModelState.IsValid)
             {
+                var authorId = _userManager.GetUserId(User);
+                post.BlogUserId = authorId;
                 var slug = _slugService.UrlFriendly(post.Title);
                 if (!_slugService.IsUnique(slug))
                 {
@@ -88,6 +90,8 @@ namespace OttBlog23.Controllers
                 }
 
                 post.Slug = slug;
+
+
                 post.Created = DateTime.Now.ToUniversalTime();
                 post.BlogUserId = _userManager.GetUserId(User);
                 _context.Add(post);
@@ -99,6 +103,23 @@ namespace OttBlog23.Controllers
                 post.Content = post.Content;
                 post.ReadyStatus = post.ReadyStatus;
                 _context.Add(post);
+                
+
+                //how to loop over the incoming list of string?
+                foreach(var tag in tagValues)
+                {
+                    _context.Add(new Tag()
+                    {
+                        PostId = post.Id,
+                        BlogUserId = authorId
+                        
+                        //,
+                        //Text = tagText
+                    });
+                }
+
+
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

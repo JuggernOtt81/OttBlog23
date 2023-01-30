@@ -10,7 +10,7 @@
 <h4>Post</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -19,34 +19,41 @@
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <label asp-for="Abstract" class="control-label"></label>
                 <input asp-for="Abstract" class="form-control" />
                 <span asp-validation-for="Abstract" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
                 <textarea asp-for="Content" class="form-control"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <label asp-for="ReadyStatus" class="control-label"></label>
                 <select asp-for="ReadyStatus" asp-items="@Html.GetEnumSelectList<ReadyStatus>()" class="form-control"></select>
                 <span asp-validation-for="ReadyStatus" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <label asp-for="Slug" class="control-label"></label>
                 <input asp-for="Slug" class="form-control" />
                 <span asp-validation-for="Slug" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
                 <input type="file" name="NewImage" class="form-control" accept=".jpg,.png,.gif,.jpeg" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
+            <hr />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+            <hr />
         </form>
     </div>
 </div>
@@ -56,11 +63,11 @@
 </div>
 
 @section Scripts {
-        <script>
-            $('#Content').summernote({
-                placeholder: "POST BODY"
-            });
-        </script>
+    <script>
+        $('#Content').summernote({
+            placeholder: "POST BODY"
+        });
+    </script>
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

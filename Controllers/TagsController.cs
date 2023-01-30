@@ -19,63 +19,54 @@ namespace OttBlog23.Controllers
         {
             _context = context;
         }
-        [Authorize]
-        // GET: Tags
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Tags.Include(t => t.BlogUser).Include(t => t.Post);
-            return View(await applicationDbContext.ToListAsync());
-        }
 
-        // GET: Tags/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Tags == null)
-            {
-                return NotFound();
-            }
+        //// GET: Tags/Details/5
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null || _context.Tags == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var tag = await _context.Tags
-                .Include(t => t.BlogUser)
-                .Include(t => t.Post)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (tag == null)
-            {
-                return NotFound();
-            }
+        //    var tag = await _context.Tags
+        //        .Include(t => t.BlogUser)
+        //        .Include(t => t.Post)
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (tag == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(tag);
-        }
-        [Authorize]
-        // GET: Tags/Create
-        public IActionResult Create()
-        {
-            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract");
-            return View();
-        }
+        //    return View(tag);
+        //}
+        //[Authorize]
+        //// GET: Tags/Create
+        //public IActionResult Create()
+        //{
+        //    ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
+        //    ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract");
+        //    return View();
+        //}
 
-        // POST: Tags/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PostId,Text")] Tag tag)
-        {
-            if (ModelState.IsValid)
-            {
-                tag.Text = tag.Text.ToLower();
-                tag.PostId = 1;
-                tag.Post = _context.Posts.FirstOrDefault(p => p.Id == tag.PostId);
-                _context.Add(tag);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", tag.BlogUserId);
-            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", tag.PostId);
-            return View(tag);
-        }
-        [Authorize]
+        //// POST: Tags/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,PostId,Text")] Tag tag)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        tag.Text = tag.Text.ToLower();
+        //        tag.PostId = 1;
+        //        tag.Post = _context.Posts.FirstOrDefault(p => p.Id == tag.PostId);
+        //        _context.Add(tag);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", tag.BlogUserId);
+        //    ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", tag.PostId);
+        //    return View(tag);
+        //}
+        //[Authorize]
         // GET: Tags/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -130,7 +121,7 @@ namespace OttBlog23.Controllers
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", tag.PostId);
             return View(tag);
         }
-        [Authorize]
+        //[Authorize]
         // GET: Tags/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

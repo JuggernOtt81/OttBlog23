@@ -3,124 +3,72 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OttBlog23.Data;
 using OttBlog23.Models;
-//using OttBlog23.ViewModels;
+using OttBlog23.Services;
+using OttBlog23.Services.Interfaces;
+using OttBlog23.ViewModels;
+
 
 namespace OttBlog23.Controllers
 {
     public class CommentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<BlogUser> _userManager;
 
-        public CommentsController(ApplicationDbContext context)
+        public CommentsController(ApplicationDbContext context, UserManager<BlogUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
-        [Authorize]
+
         // GET: ALL ORIGINAL Comments
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
-            return View(await applicationDbContext.ToListAsync());
+            var originalComments = await _context.Comments.ToListAsync();
+            return View("Index", originalComments);
         }
-        [Authorize]
+ 
         //GET: MODERATED Comments
         public async Task<IActionResult> ModeratedIndex()
         {
-            var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
-            return View(await applicationDbContext.ToListAsync());
+            var moderatedComments = await _context.Comments.Where(c => c.Moderated != null).ToListAsync();
+            return View("Index", moderatedComments);
         }
-        [Authorize]
+
         //GET: DELETED Comments
         public async Task<IActionResult> DeletedIndex()
         {
-            var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
-            return View(await applicationDbContext.ToListAsync());
-        }
-        [Authorize]
-        // GET: Comments/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Comments == null)
-            {
-                return NotFound();
-            }
-
-            var comment = await _context.Comments
-                .Include(c => c.BlogUser)
-                .Include(c => c.Moderator)
-                .Include(c => c.Post)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (comment == null)
-            {
-                return NotFound();
-            }
-
-            return View(comment);
-        }
-        [Authorize]
-        // GET: Comments/Create
-        public IActionResult Create()
-        {
-            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract");
-            return View();
+            var deletedComments = await _context.Comments.Where(c => c.Deleted != null).ToListAsync();
+            return View("Index", deletedComments);
+            //see the soft deleted
+            //option to hard delete
         }
 
-        // POST: Comments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("PostId", "BlogUserId", "Body")] Comment comment)
-        public async Task<IActionResult> Create(Comment comment)
+        public async Task<IActionResult> Create([Bind("PostId,Body")] Comment comment)
         {
             if (ModelState.IsValid)
             {
-                //var comment = new Comment
-                //{
-                //    PostId = commentViewModel.PostId,
-                //    BlogUserId = commentViewModel.BlogUserId,
-                //    Body = commentViewModel.Body
-                //};
-                // Add the new Comment object to the database
+                
+                comment.BlogUserId = _userManager.GetUserId(User);
+                comment.Created = DateTime.Now.ToUniversalTime();
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                // Redirect to the post details page
-                return RedirectToAction(nameof(Index));
             }
-            else
-            {
-                throw new Exception("The ModelState is NOT valid. Make sure all the properties are accounted for.");
-            }
-            //if (ModelState.IsValid)
-            //{
-            //    comment.Created = DateTime.Now.ToUniversalTime();
-            //    //comment.Updated = DateTime.Now.ToUniversalTime();
-            //    //comment.Moderated = DateTime.Now.ToUniversalTime();
-            //    //comment.Deleted = DateTime.Now.ToUniversalTime();
-            //    comment.Body = comment.Body;
-            //    //comment.ModeratedBody = comment.ModeratedBody;
-            //    //comment.ModerationType = comment.ModerationType;
-            //    //comment.BlogUserId = comment.BlogUserId;
-            //    //comment.ModeratorId = comment.ModeratorId;
-            //    comment.PostId = comment.PostId;
-            //    _context.Add(comment);
-            //    _context.SaveChanges();
-            //    await _context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", comment.BlogUserId);
-            //ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id", comment.ModeratorId);
-            //ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", comment.PostId);
-            //return View(comment);
+            return RedirectToAction("Details", "Posts", new { id = comment.PostId });
+
         }
-        [Authorize]
+
+
         // GET: Comments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -178,7 +126,7 @@ namespace OttBlog23.Controllers
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", comment.PostId);
             return View(comment);
         }
-        [Authorize]
+
         // GET: Comments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
