@@ -30,6 +30,26 @@
     </dd>
 </dl>
 
+<hr />
+
+<article>
+    <div class="row">
+    <div class="col text-center font-weight-bold h3">
+        Custom Post Tags
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            @foreach (var tag in Model.Tags)
+            {
+                <a class="btn-warning btn-sm btn-outline-warning" asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a>
+            }            
+        </div>
+    </div>
+</article>
+
+<hr />
+
 <form asp-controller="Comments" asp-action="Create">
     <input type="hidden" name="PostId" value="@Model.Id">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>

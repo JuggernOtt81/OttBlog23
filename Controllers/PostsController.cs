@@ -39,9 +39,9 @@ namespace OttBlog23.Controllers
         }
 
         // GET: Posts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string slug)
         {
-            if (id == null || _context.Posts == null)
+            if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
@@ -49,10 +49,11 @@ namespace OttBlog23.Controllers
             var post = await _context.Posts
             .Include(p => p.Blog)
             .Include(p => p.BlogUser)
-            .FirstOrDefaultAsync(m => m.Id == id);
-            ViewData["PostId"] = post.Id;
-            ViewData["Title"] = post.Title;
-            ViewData["Content"] = post.Content;
+            .Include(p => p.Tags)
+            .FirstOrDefaultAsync(m => m.Slug == slug);
+            //ViewData["PostId"] = post.Id;
+            //ViewData["Title"] = post.Title;
+            //ViewData["Content"] = post.Content;
 
             if (post == null)
             {
