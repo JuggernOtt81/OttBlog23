@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using OttBlog23.ViewModels;
 using OttBlog23.Services;
 using OttBlog23.Services.Interfaces;
+using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace OttBlog23.Services
 {
@@ -19,12 +21,16 @@ namespace OttBlog23.Services
         private readonly ApplicationDbContext _dbContext;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<BlogUser> _userManager;
+        private readonly IImageService _imageService;
+        private readonly IConfiguration _configuration;
 
-        public DataService(ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<BlogUser> userManager)
+        public DataService(ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<BlogUser> userManager, IImageService imageService, IConfiguration configuration)
         {
             _dbContext = dbContext;
             _roleManager = roleManager;
             _userManager = userManager;
+            _imageService = imageService;
+            _configuration= configuration;
         }
 
         public async Task ManageDataAsync()
@@ -71,6 +77,8 @@ namespace OttBlog23.Services
                 DisplayName = "JuggernOtt81",
                 PhoneNumber = "(555) 867-5309",
                 EmailConfirmed = true,
+                ImageData = await _imageService.EncodeImageAsync(_configuration["DefaultUserImage"]),
+                ContentType = Path.GetExtension(_configuration["DefaultUserImage"])
             };
 
             //then define that user by the adminUser designation
@@ -89,6 +97,8 @@ namespace OttBlog23.Services
                 DisplayName = "lawsonott3",
                 PhoneNumber = "(800) 867-5309",
                 EmailConfirmed = true,
+                ImageData = await _imageService.EncodeImageAsync(_configuration["DefaultUserImage"]),
+                ContentType = Path.GetExtension(_configuration["DefaultUserImage"])
             };
             await _userManager.CreateAsync(moderatorUser, "Abc&123!");
             await _userManager.AddToRoleAsync(moderatorUser, BlogRole.Moderator.ToString());

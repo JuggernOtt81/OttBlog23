@@ -7,6 +7,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,9 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using OttBlog23.Models;
 using OttBlog23.Services.Interfaces;
+using OttBlog23.Services;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace OttBlog23.Areas.Identity.Pages.Account
 {
@@ -25,17 +29,23 @@ namespace OttBlog23.Areas.Identity.Pages.Account
         private readonly UserManager<BlogUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IBlogEmailSender _emailSender;
+        private readonly IImageService _imageService;
+        private readonly IConfiguration _configuration;
 
         public RegisterModel(
             UserManager<BlogUser> userManager,
             SignInManager<BlogUser> signInManager,
             ILogger<RegisterModel> logger,
-            IBlogEmailSender emailSender)
+            IBlogEmailSender emailSender,
+            IImageService imageService,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _imageService = imageService;
+            _configuration = configuration;
         }
 
         [BindProperty]
@@ -62,6 +72,19 @@ namespace OttBlog23.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Display(Name = "Custom Image")]
+            public IFormFile ImageFile { get; set; }
+
+            [Required]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -76,7 +99,17 @@ namespace OttBlog23.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new BlogUser { UserName = Input.Email, Email = Input.Email };
+                var user = new BlogUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    ImageData = (await _imageService.EncodeImageAsync(Input.ImageFile)) ??
+                                 await _imageService.EncodeImageAsync(_configuration["DefaultUserImage"]),
+                    ContentType = Input.ImageFile is null ? Path.GetExtension(_configuration["DefaultUserImage"]) :
+                    _imageService.ContentType(Input.ImageFile)
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
