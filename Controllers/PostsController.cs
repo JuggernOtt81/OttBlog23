@@ -123,18 +123,19 @@ namespace OttBlog23.Controllers
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Posts == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var post = await _context.Posts.FindAsync(id);
+            var post = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
+
             if (post == null)
             {
                 return NotFound();
             }
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
-            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", post.BlogUserId);
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
+            ViewData["TagValues"] = string.Join(",", post.Tags.Select(t => t.Text));
             return View(post);
         }
 
@@ -143,7 +144,7 @@ namespace OttBlog23.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Title,Abstract,Content,ReadyStatus,Slug")] Post post, IFormFile newImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus")] Post post, IFormFile newImage, List<string> TagValues)
         {
             if (id != post.Id)
             {
@@ -152,33 +153,36 @@ namespace OttBlog23.Controllers
 
             if (ModelState.IsValid)
             {
-                post.Updated = DateTime.Now.ToUniversalTime();
                 try
                 {
-                    var newPost = await _context.Posts.FindAsync(post.Id);
-                    if (newPost.Title != post.Title)
-                    {
-                        newPost.Title= post.Title;
-                    };
-                    if (newPost.Abstract != post.Abstract)
-                    {
-                        newPost.Abstract = post.Abstract;
-                    };
-                    if (newPost.Content != post.Content)
-                    {
-                        newPost.Content = post.Content;
-                    }
-                    if (newPost.ReadyStatus!= post.ReadyStatus)
-                    {
-                        newPost.ReadyStatus = post.ReadyStatus;
-                    }
+                    var newPost = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == post.Id);
+
                     newPost.Updated = DateTime.Now.ToUniversalTime();
+                    newPost.Title = post.Title;
+                    newPost.Abstract = post.Abstract;
+                    newPost.Content = post.Content;
+                    newPost.ReadyStatus = post.ReadyStatus;
+
                     if (newImage != null)
                     {
                         newPost.ImageData = await _imageService.EncodeImageAsync(newImage);
                         post.ContentType = _imageService.ContentType(newImage);
                     };
 
+                    //remove all previously attached tags
+                    _context.RemoveRange(newPost.Tags);
+                    
+                    await _context.SaveChangesAsync();
+                    
+                    foreach (var tagText in TagValues)
+                    {
+                        _context.Add(new Tag()
+                        {
+                            PostId = newPost.Id,
+                            BlogUserId = newPost.BlogUserId,
+                            Text = tagText
+                        });
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

@@ -75,7 +75,7 @@
                         </div>
                     </div>
                     <div class="col">
-                        <select class="note-btn-block" name="TagValues" id="TagList" multiple>
+                        <select style="width:300px;" name="TagValues" id="TagList" multiple>
                         </select>
                     </div>
                 </div>
@@ -96,9 +96,7 @@
 
 @section Scripts {
     <script src="~/js/custom.js"></script>
-    <script>
-        $('#Content').summernote({});
-    </script>
+    <script>$('#Content').summernote({});</script>
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
