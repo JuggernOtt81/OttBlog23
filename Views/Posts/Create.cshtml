@@ -57,18 +57,18 @@
                     <div class="col">
                         <div class="row">
                             <div class="col">
-                                <input type="text" class="form-control" id="TagEntry" />
+                                <input name="tagText" type="text" class="form-control" id="TagEntry" />
                             </div>
                         </div>
                         <br />
                         <div class="row">
                             <div class="col">
-                                <button name="Add" type="button" class="btn btn-dark btn-sm note-btn-block">
+                                <button onclick="AddTag()" name="Add" type="button" class="btn btn-dark btn-sm note-btn-block">
                                     ADD
                                 </button>
                             </div>
                             <div class="col">
-                                <button name="Delete" type="button" class="btn btn-dark btn-sm note-btn-block">
+                                <button onclick="DeleteTag()" name="Delete" type="button" class="btn btn-dark btn-sm note-btn-block">
                                     DELETE
                                 </button>
                             </div>
@@ -95,6 +95,7 @@
 </div>
 
 @section Scripts {
+    <script src="~/js/custom.js"></script>
     <script>
         $('#Content').summernote({});
     </script>

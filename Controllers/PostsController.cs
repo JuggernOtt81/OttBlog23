@@ -75,52 +75,44 @@ namespace OttBlog23.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post, List<string> tagValues)
+        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post, List<string> TagValues)
         {
             if (ModelState.IsValid)
             {
+                post.Created = DateTime.Now.ToUniversalTime();
+
                 var authorId = _userManager.GetUserId(User);
                 post.BlogUserId = authorId;
+
+                post.ImageData = await _imageService.EncodeImageAsync(post.Image);
+                post.ContentType = _imageService.ContentType(post.Image);
+
                 var slug = _slugService.UrlFriendly(post.Title);
                 if (!_slugService.IsUnique(slug))
                 {
                     ModelState.AddModelError("Title", "Duplicate title found! The title must be unique.");
-                    ViewData["TagValues"] = string.Join(",", tagValues);
+                    ViewData["TagValues"] = string.Join(",", TagValues);
                     return View(post);
                 }
 
-                post.Slug = slug;
+                post.Slug = slug;              
 
+                _context.Add(post);
 
-                post.Created = DateTime.Now.ToUniversalTime();
-                post.BlogUserId = _userManager.GetUserId(User);
-                _context.Add(post);
-                post.ImageData = await _imageService.EncodeImageAsync(post.Image);
-                post.ContentType = _imageService.ContentType(post.Image);
-                post.BlogId = post.BlogId;
-                post.Title = post.Title;
-                post.Abstract = post.Abstract;
-                post.Content = post.Content;
-                post.ReadyStatus = post.ReadyStatus;
-                _context.Add(post);
+                await _context.SaveChangesAsync();
                 
-
-                //how to loop over the incoming list of string?
-                foreach(var tag in tagValues)
+                foreach (var tagText in TagValues)
                 {
                     _context.Add(new Tag()
                     {
                         PostId = post.Id,
-                        BlogUserId = authorId
-                        
-                        //,
-                        //Text = tagText
+                        BlogUserId = authorId,
+                        Text = tagText
                     });
                 }
 
-
-
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
