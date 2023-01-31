@@ -1,5 +1,8 @@
-﻿@using OttBlog23.Models
-@model IEnumerable<Blog>
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@using OttBlog23.Models
+@model IPagedList<Blog>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -8,7 +11,7 @@
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
-            @foreach(var blog in Model)
+            @foreach (var blog in Model)
             {
                 <div class="post-preview">
                     <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
@@ -25,7 +28,7 @@
                         on @blog.Created.ToString("MMM dd, yyyy")
                     </p>
                 </div>
-            }            
+            }
         </div>
     </div>
 </div>
@@ -35,14 +38,19 @@
     <hr />
     See my work samples here: <a href="https://www.JuggernOtt81.com" target="_blank">www.JuggernOtt81.com</a>
 </p>
-@*<script>
-    function created() {
-        this.setProperties({
-            iframeSettings: {
-                attributes: {
-                    readonly: 'readonly'
-                }
-            }
-        }, false);
-    }
-</script>*@
+
+
+<div class="row">
+    <div class="col h3">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    </div>
+</div>
+<div class="row">
+    <div class="col h3">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new {page = page}),
+        new PagedListRenderOptions{
+            LiElementClasses = new string[] {"page-item"},
+            PageClasses = new string[] {"page-link"}
+        })
+    </div>
+</div>

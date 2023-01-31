@@ -12,6 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList;
+using OttBlog23.Services;
+using OttBlog23.Enums;
 
 namespace OttBlog23.Controllers
 {
@@ -31,13 +34,19 @@ namespace OttBlog23.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            var blogs = await _context.Blogs
-                .Include(b => b.BlogUser)
-                .ToListAsync();
+            var pageNumber = page ?? 1;
+            var pageSize = 3;
 
-            return View(blogs);
+            //var blogs = _context.Blogs.Where(b => b.Posts.Any(p => p.ReadyStatus == Enums.ReadyStatus.ProductionReady)).OrderByDescending(b => b.Created).ToPagedListAsync(pageNumber, pageSize);
+
+            var blogs = _context.Blogs
+                .Include(b => b.BlogUser)
+                .OrderByDescending(b => b.Created)
+                .ToPagedListAsync(pageNumber, pageSize);
+
+            return View(await blogs);
         }
 
         public IActionResult Privacy()

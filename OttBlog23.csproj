@@ -56,6 +56,9 @@
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="20.4.0.44" />
     <PackageReference Include="Syncfusion.EJ2.WordEditor.AspNet.Core" Version="20.4.0.44" />
     <PackageReference Include="Syncfusion.Licensing" Version="20.4.0.44" />
+    <PackageReference Include="X.PagedList" Version="8.4.3" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.3" />
+    <PackageReference Include="X.PagedList.Web.Common" Version="8.0.7" />
   </ItemGroup>
 
 </Project>
