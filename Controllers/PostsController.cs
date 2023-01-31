@@ -10,9 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OttBlog23.Data;
+using OttBlog23.Enums;
 using OttBlog23.Models;
 using OttBlog23.Services;
 using OttBlog23.Services.Interfaces;
+using X.PagedList;
 
 namespace OttBlog23.Controllers
 {
@@ -64,16 +66,22 @@ namespace OttBlog23.Controllers
         }
 
         //BlogPostIndex
-        public async Task<IActionResult> BlogPostIndex(int? id)
+        public async Task<IActionResult> BlogPostIndex(int? id, int? page)
         {
             if(id is null)
             {
                 return NotFound();
             }
 
-            var posts = _context.Posts.Where(p => p.BlogId == id).ToList();
+            var pageNumber = page ?? 1;
+            var pageSize = 3;
 
-            return View("Index", posts);
+            var posts = _context.Posts
+                .Where(p => p.BlogId == id && p.ReadyStatus == ReadyStatus.ProductionReady)
+                .OrderByDescending(p => p.Created)
+                .ToPagedListAsync(pageNumber, pageSize);
+
+            return View(await posts);
         }
 
         // GET: Posts/Create
@@ -294,5 +302,10 @@ namespace OttBlog23.Controllers
         {
             return (_context.Posts?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+
+
+
+
     }
 }
