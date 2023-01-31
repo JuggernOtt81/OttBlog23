@@ -63,6 +63,19 @@ namespace OttBlog23.Controllers
             return View(post);
         }
 
+        //BlogPostIndex
+        public async Task<IActionResult> BlogPostIndex(int? id)
+        {
+            if(id is null)
+            {
+                return NotFound();
+            }
+
+            var posts = _context.Posts.Where(p => p.BlogId == id).ToList();
+
+            return View("Index", posts);
+        }
+
         // GET: Posts/Create
         public IActionResult Create()
         {

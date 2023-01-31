@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Microsoft.EntityFrameworkCore;
 
 namespace OttBlog23.Controllers
 {
@@ -30,13 +31,13 @@ namespace OttBlog23.Controllers
             _logger = logger;
         }
 
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ViewBag.resources = new
-            {
-                styles = new[] { "myStyle.css" }
-            };
-            return View();
+            var blogs = await _context.Blogs
+                .Include(b => b.BlogUser)
+                .ToListAsync();
+
+            return View(blogs);
         }
 
         public IActionResult Privacy()
