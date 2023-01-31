@@ -82,19 +82,39 @@ namespace OttBlog23.Controllers
 
                 var authorId = _userManager.GetUserId(User);
                 post.BlogUserId = authorId;
-
                 post.ImageData = await _imageService.EncodeImageAsync(post.Image);
                 post.ContentType = _imageService.ContentType(post.Image);
-
+                
+                #region  ***SLUGS*** (POST/CREATE) [START]
+                
                 var slug = _slugService.UrlFriendly(post.Title);
+                
+                //slug error
+                var validationError = false;
+                
+
+                if (string.IsNullOrEmpty(slug))
+                {
+                    validationError = true;
+                    ModelState.AddModelError("Title", "Invalid title! The title must contain valid characters and meet the minimum length requirements.");
+                }
+
                 if (!_slugService.IsUnique(slug))
                 {
-                    ModelState.AddModelError("Title", "Duplicate title found! The title must be unique.");
+                    validationError = true;
+                    ModelState.AddModelError("Title", "Duplicate slug found! The title's slug conversion must be unique. Please revise the title.");
+                }
+
+                if (validationError)
+                {
                     ViewData["TagValues"] = string.Join(",", tagValues);
+                    ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
                     return View(post);
                 }
 
-                post.Slug = slug;              
+                post.Slug = slug;
+
+                #endregion ***SLUGS*** (POST/CREATE) [END]
 
                 _context.Add(post);
 
@@ -115,6 +135,7 @@ namespace OttBlog23.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
+
             return View(post);
         }
 
@@ -150,8 +171,7 @@ namespace OttBlog23.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {
-                    var newSlug = _slugService.UrlFriendly(post.Title);
+                {                    
                     var newPost = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == post.Id);
 
                     newPost.Updated = DateTime.Now.ToUniversalTime();
@@ -160,20 +180,23 @@ namespace OttBlog23.Controllers
                     newPost.Content = post.Content;
                     newPost.ReadyStatus = post.ReadyStatus;
 
-                    if (newSlug != newPost.Slug)
+                    #region  ***SLUGS*** (POST/EDIT) [START]
+                    var newSlug = _slugService.UrlFriendly(post.Title);
+                    if(newSlug != newPost.Slug)
                     {
-                        if (_slugService.IsUnique(newPost.Slug))
+                        if (_slugService.IsUnique(newSlug))
                         {
                             newPost.Title = post.Title;
                             newPost.Slug = newSlug;
                         }
                         else
                         {
-                            ModelState.AddModelError("Title", "Duplicate title found! The title must be unique.");
-                            ViewData["TagValues"] = string.Join(",", post.Tags.Select(t => t.Text));
-                            return View(post);
+                            ModelState.AddModelError("Title", "Duplicate slug found! The title's slug conversion must be unique. Please revise the title.");
+                            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
+                            ViewData["TagValues"] = string.Join(",", tagValues);
                         }
                     }
+                    #endregion ***SLUGS*** (POST/EDIT) [END]
 
                     if (newImage != null)
                     {
