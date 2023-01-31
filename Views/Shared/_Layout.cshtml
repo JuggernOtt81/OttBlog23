@@ -59,6 +59,16 @@
                     <div class="site-heading">
                         <h1>Clean Blog</h1>
                         <span class="subheading">A Blog Theme by Start Bootstrap</span>
+
+
+                        <form asp-action="SearchIndex" asp-controller="Posts">
+                            <div class="input-group mt-5">
+                                <input type="text" class="form-control" placeholder="Search Term" name="searchTerm" />
+                                <div class="input-group-append"></div>
+                                    <button class="btn btn-warning note-btn-block btn-sm" type="submit">Search</button>
+                                
+                            </div>
+                        </form>                        
                     </div>
                 </div>
             </div>
