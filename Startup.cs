@@ -49,6 +49,7 @@ namespace OttBlog23
             services.AddScoped<IBlogEmailSender, EmailService>();
             services.AddScoped<IImageService, BasicImageService>();
             services.AddScoped<ISlugService, BasicSlugService>();
+            services.AddScoped<BlogSearchService>();
             //services.AddUserSecrets<Startup>();
 
         }

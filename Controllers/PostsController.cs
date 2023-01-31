@@ -24,13 +24,15 @@ namespace OttBlog23.Controllers
         private readonly IImageService _imageService;
         private readonly UserManager<BlogUser> _userManager;
         private readonly ISlugService _slugService;
+        private readonly BlogSearchService _blogSearchService;
 
-        public PostsController(ApplicationDbContext context, IImageService imageService, UserManager<BlogUser> userManager, ISlugService slugService)
+        public PostsController(ApplicationDbContext context, IImageService imageService, UserManager<BlogUser> userManager, ISlugService slugService, BlogSearchService blogSearchService)
         {
             _slugService = slugService;
             _userManager = userManager;
             _imageService = imageService;
             _context = context;
+            _blogSearchService = blogSearchService;
         }
 
         //
@@ -40,25 +42,9 @@ namespace OttBlog23.Controllers
 
             var pageNumber = page ?? 1;
             var pageSize = 3;
-            var posts = _context.Posts.Where(p => p.ReadyStatus == ReadyStatus.ProductionReady).AsQueryable();
-
-            if (!string.IsNullOrEmpty(SearchTerm))
-            {
-                SearchTerm = SearchTerm.ToLower();
-
-                posts = posts.Where(p => p.Title.ToLower().Contains(SearchTerm) || 
-                p.Abstract.ToLower().Contains(SearchTerm) || 
-                p.Content.ToLower().Contains(SearchTerm) || 
-                    p.Comments.Any(c => c.Body.ToLower().Contains(SearchTerm) || 
-                        c.ModeratedBody.ToLower().Contains(SearchTerm) ||
-                        c.BlogUser.FirstName.ToLower().Contains(SearchTerm) || 
-                        c.BlogUser.LastName.ToLower().Contains(SearchTerm) || 
-                        c.BlogUser.Email.ToLower().Contains(SearchTerm) || 
-                        c.BlogUser.UserName.ToLower().Contains(SearchTerm)));
-            }
             
-            posts = posts.OrderByDescending(p => p.Created);
-            
+            var posts = _blogSearchService.Search(SearchTerm);
+
             return View(await posts.ToPagedListAsync(pageNumber, pageSize));
         }
 
