@@ -66,14 +66,17 @@ function Search(str) {
     var tagsEl = document.getElementById('TagList');
     if (tagsEl) {
         let tags = tagsEl.options;
+        //for (let i = 0; i < options.length; i++) {
+        //    if (options[i].value == str) {
+        //        return '#${str} was found to be a DUPLICATE tag for this post. Please enter a new tag.';
+        //    }
+        //}
         for (let i = 0; i < tags.length; i++) {
             if (tags[i].value == str) {
                 return '#${str} was found to be a DUPLICATE tag for this post. Please enter a new tag.';
             }
         }
-
     }
-
 }
 
 
