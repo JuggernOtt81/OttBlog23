@@ -30,7 +30,7 @@ namespace OttBlog23.Controllers
             _imageService = imageService;
             _context = context;
         }
-        //[Authorize]
+
         // GET: Posts
         public async Task<IActionResult> Index()
         {
@@ -62,7 +62,7 @@ namespace OttBlog23.Controllers
 
             return View(post);
         }
-        [Authorize]
+
         // GET: Posts/Create
         public IActionResult Create()
         {
@@ -72,11 +72,9 @@ namespace OttBlog23.Controllers
         }
 
         // POST: Posts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post, List<string> TagValues)
+        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post, List<string> tagValues)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +90,7 @@ namespace OttBlog23.Controllers
                 if (!_slugService.IsUnique(slug))
                 {
                     ModelState.AddModelError("Title", "Duplicate title found! The title must be unique.");
-                    ViewData["TagValues"] = string.Join(",", TagValues);
+                    ViewData["TagValues"] = string.Join(",", tagValues);
                     return View(post);
                 }
 
@@ -102,7 +100,7 @@ namespace OttBlog23.Controllers
 
                 await _context.SaveChangesAsync();
                 
-                foreach (var tagText in TagValues)
+                foreach (var tagText in tagValues)
                 {
                     _context.Add(new Tag()
                     {
@@ -119,7 +117,7 @@ namespace OttBlog23.Controllers
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             return View(post);
         }
-        [Authorize]
+
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -140,11 +138,9 @@ namespace OttBlog23.Controllers
         }
 
         // POST: Posts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus")] Post post, IFormFile newImage, List<string> TagValues)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus")] Post post, IFormFile newImage, List<string> tagValues)
         {
             if (id != post.Id)
             {
@@ -155,6 +151,7 @@ namespace OttBlog23.Controllers
             {
                 try
                 {
+                    var newSlug = _slugService.UrlFriendly(post.Title);
                     var newPost = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == post.Id);
 
                     newPost.Updated = DateTime.Now.ToUniversalTime();
@@ -162,6 +159,21 @@ namespace OttBlog23.Controllers
                     newPost.Abstract = post.Abstract;
                     newPost.Content = post.Content;
                     newPost.ReadyStatus = post.ReadyStatus;
+
+                    if (newSlug != newPost.Slug)
+                    {
+                        if (_slugService.IsUnique(newPost.Slug))
+                        {
+                            newPost.Title = post.Title;
+                            newPost.Slug = newSlug;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Title", "Duplicate title found! The title must be unique.");
+                            ViewData["TagValues"] = string.Join(",", post.Tags.Select(t => t.Text));
+                            return View(post);
+                        }
+                    }
 
                     if (newImage != null)
                     {
@@ -174,7 +186,7 @@ namespace OttBlog23.Controllers
                     
                     await _context.SaveChangesAsync();
                     
-                    foreach (var tagText in TagValues)
+                    foreach (var tagText in tagValues)
                     {
                         _context.Add(new Tag()
                         {
@@ -202,7 +214,7 @@ namespace OttBlog23.Controllers
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", post.BlogUserId);
             return View(post);
         }
-        [Authorize]
+
         // GET: Posts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

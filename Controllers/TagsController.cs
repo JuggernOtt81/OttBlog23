@@ -66,7 +66,7 @@ namespace OttBlog23.Controllers
         //    ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", tag.PostId);
         //    return View(tag);
         //}
-        //[Authorize]
+
         // GET: Tags/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -121,7 +121,7 @@ namespace OttBlog23.Controllers
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", tag.PostId);
             return View(tag);
         }
-        //[Authorize]
+
         // GET: Tags/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

@@ -34,7 +34,7 @@ $("form").on("submit", function () {
 
 if (tagValues != "") {
     let tagArray = tagValues.split(",");
-    for (let loop = 0; loop < tag.length; loop++) {
+    for (let loop = 0; loop < tagArray.length; loop++) {
         ReplaceTag(tagArray[loop], loop);
         index++;
     }
