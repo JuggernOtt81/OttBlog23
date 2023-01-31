@@ -1,12 +1,9 @@
 ﻿@using OttBlog23.Enums;
 @model OttBlog23.Models.Post
-
 @{
     ViewData["Title"] = "Create";
 }
-
 <h1>@ViewData["Title"]</h1>
-
 <h4>Post</h4>
 <hr />
 <div class="row">
@@ -34,8 +31,6 @@
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <br />
-
-
             <div class="form-group">
                 <div class="row">
                     <div class="col-6">
@@ -91,17 +86,13 @@
         </form>
     </div>
 </div>
-
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
 @section Scripts {
+    <script>
+        let tagValues = '@ViewData["TagValues"]';
+        $('#Content').summernote({});
+    </script>
     <script src="~/js/custom.js"></script>
-    <script>$('#Content').summernote({});</script>
-
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
 }
