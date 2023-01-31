@@ -75,10 +75,16 @@ namespace OttBlog23
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(name: "SlugRoute",
+                                pattern: "BlogPosts/UrlFriendly/{slug}",
+                                defaults: new { controller = "Posts", action = "Details" });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                
+
+                endpoints.MapRazorPages();
             });
         }
     }
