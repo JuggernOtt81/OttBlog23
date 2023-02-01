@@ -12,8 +12,8 @@ using OttBlog23.Data;
 namespace OttBlog23.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230130140621_988")]
-    partial class _988
+    [Migration("20230201120105_123")]
+    partial class _123
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
