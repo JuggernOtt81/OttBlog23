@@ -77,30 +77,31 @@
                 </div>
                 <div class="media-body col">
                     <h4>@comment.BlogUser.FullName</h4>
-                    @if (comment.Moderated is not null)
-                    {
-                        <small><i>MODERATED by @comment.Moderator on @comment.Moderated?.ToString("MMM dd, yyyy") for @comment.ModerationType.ToString()</i></small>
-                    }
-                    else
-                    {
-                        <small><i>Commented on @comment.Created.Value.ToString("MMM dd, yyyy")</i></small>
-                    }
-
+                    <small>
+                        <i>
+                            @if (comment.Moderated is not null)
+                            {
+                                <span class="small">
+                                    <strong>Moderated</strong> on<span class"font-weight-bolder font-italic"> @comment.Moderated?.ToString("MMM dd, yyyy")</span> for <strong>@comment.ModerationType.ToString()</strong>
+                                </span>
+                            }
+                        </i>
+                    </small>
+                    <br>
+                    <p style="font-family:Courier New, Courier, monospace">
                     @if (string.IsNullOrEmpty(comment.Body))
                     {
-                        <span class="small font-italic">Comment not available...</span>
+                        <span style=" color: gray" class="small font-italic">Comment not available...</span>
                     }
                     else if (comment.Moderated is not null)
                     {
-                        @comment.ModeratedBody
+                        <span style="color:orangered">@comment.ModeratedBody</span>
                     }
                     else if (comment.Deleted is null)
                     {
-                        @comment.Body
+                            <span style="color:blue">@comment.Body</span>
                     }
-
-                    <p>@comment.Body</p>
-
+                    </p>
                     @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == userManager.GetUserId(User))
                     {
                         <hr />
@@ -157,6 +158,8 @@
                             <form asp-action="Moderate" asp-controller="Comments">
                                 @Html.Hidden("Id", comment.Id)
                                 @Html.Hidden("Body", comment.Body)
+@*                                @Html.Hidden("ModerationType", comment.ModerationType)
+                                @Html.Hidden("ModeratedBody", comment.ModeratedBody)*@
 
                                 <div class="form-group">
                                     <label class="control-label">Original Comment</label>
@@ -170,7 +173,7 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Reason For Moderation</label>
-                                    <select class="form-control" asp-for="@comment.ModerationType" name="ModerationType" asp-items="Html.GetEnumSelectList<ModerationType>()"></select>
+                                    <select class="form-control" required asp-for="@comment.ModerationType" name="ModerationType" asp-items="Html.GetEnumSelectList<ModerationType>()"></select>
                                 </div>
 
                                 <div class="form-group">

@@ -130,7 +130,7 @@ namespace OttBlog23.Controllers
         //POST: Moderate
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Moderate(int id, [Bind("Id,Body,ModeratedBody,ModertionType")] Comment comment)
+        public async Task<IActionResult> Moderate(int id, [Bind("Id,Body,ModeratedBody,ModerationType")] Comment comment)
         {
             if (id != comment.Id)
             {
