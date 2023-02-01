@@ -52,6 +52,7 @@ namespace OttBlog23.Controllers
             //option to hard delete
         }
 
+        //POST: Comments CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PostId,Body")] Comment comment)
@@ -63,8 +64,10 @@ namespace OttBlog23.Controllers
                 comment.Created = DateTime.Now.ToUniversalTime();
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+
             }
-            return RedirectToAction("Details", "Posts", new { id = comment.PostId });
+            return View(comment);
 
         }
 

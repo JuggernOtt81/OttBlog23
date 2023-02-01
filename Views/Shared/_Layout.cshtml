@@ -32,6 +32,12 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Blogs" asp-action="Index">Blogs</a>
                     </li>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Blogs" asp-action="Create">Create Blog</a>
+                        </li>
+                    }
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Index">Posts</a>
                     </li>
@@ -65,10 +71,10 @@
                             <div class="input-group mt-5">
                                 <input type="text" class="form-control" placeholder="Search Term" name="searchTerm" />
                                 <div class="input-group-append"></div>
-                                    <button class="btn btn-warning note-btn-block btn-sm" type="submit">Search</button>
-                                
+                                <button class="btn btn-warning note-btn-block btn-sm" type="submit">Search</button>
+
                             </div>
-                        </form>                        
+                        </form>
                     </div>
                 </div>
             </div>

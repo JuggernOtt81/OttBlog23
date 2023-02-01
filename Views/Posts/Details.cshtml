@@ -1,6 +1,11 @@
 ﻿@model OttBlog23.Models.Post
+@using OttBlog23.Data
+@using OttBlog23.Enums
+@using OttBlog23.Helpers
 @using OttBlog23.Models
-@using OttBlog23.Services.Interfaces;
+@using OttBlog23.ViewModels
+@using OttBlog23.Services
+@using OttBlog23.Services.Interfaces
 @inject IImageService imageService
 
 @{
@@ -34,8 +39,8 @@
 
 <article>
     <div class="row">
-    <div class="col text-center font-weight-bold h3">
-        Custom Post Tags
+        <div class="col text-center font-weight-bold h3">
+            Custom Post Tags
         </div>
     </div>
     <div class="row">
@@ -43,20 +48,45 @@
             @foreach (var tag in Model.Tags)
             {
                 <a class="btn-warning btn-sm btn-outline-warning" asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a>
-            }            
+            }
         </div>
     </div>
+    <hr />
+    <div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <form asp-controller="Comments" asp-action="Create">
+                @Html.Hidden("PostId", Model.Id)
+                <div class="form-group">
+                    <label class="h2 custom-control-label font-weight-bold">Add Comment</label>
+                    <textarea name="body" class="form-control" rows="10"></textarea>
+                </div>
+                <input type="submit" value="Create" class="btn note-btn-block btn-sm btn-dark" />
+            </form>
+        }
+        else
+        {
+            <a class="btn note-btn-block btn-sm btn-dark" asp-area="Identity" asp-page="/Account/Login">
+                Log in to comment
+            </a>
+        }
+        <hr />
+        <span class="btn btn-sm btn-dark note-btn-block">@Model.Comments.Count COMMENT(S)</span>
+        @foreach (var comment in Model.Comments)
+        {
+            <div class="media media-border p-2 m-2 bg-light row">
+                <div class="media-body col-1">
+                    <img class="mr-3 mt-3 rounded-circle" style="width:60px;" src="@imageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ContentType)">
+                </div>
+                <div class="media-body col">
+                    <h4>@comment.BlogUser.FullName</h4>
+                    <small><i> Posted on @comment.Created.Value.ToString("MMM dd, yyyy")</i></small>
+                    <p>@comment.Body</p>
+                </div>
+            </div>
+        }
+    </div>
 </article>
-
-<hr />
-
-<form asp-controller="Comments" asp-action="Create">
-    <input type="hidden" name="PostId" value="@Model.Id">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <textarea name="Body" class="form-control"></textarea>
-    <input type="submit" value="Create" class="btn btn-primary" />
-</form>
-
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
