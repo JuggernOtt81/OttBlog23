@@ -15,6 +15,7 @@ using OttBlog23.Models;
 using OttBlog23.Services;
 using OttBlog23.Services.Interfaces;
 using X.PagedList;
+using OttBlog23.ViewModels;
 
 namespace OttBlog23.Controllers
 {
@@ -42,7 +43,7 @@ namespace OttBlog23.Controllers
 
             var pageNumber = page ?? 1;
             var pageSize = 3;
-            
+
             var posts = _blogSearchService.Search(SearchTerm);
 
             return View(await posts.ToPagedListAsync(pageNumber, pageSize));
@@ -58,34 +59,45 @@ namespace OttBlog23.Controllers
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(string slug)
         {
+            ViewData["Title"] = "Post Details Page";
             if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
 
             var post = await _context.Posts
-            .Include(p => p.Blog)
-            .Include(p => p.BlogUser)
-            .Include(p => p.Tags)
-            .Include(p => p.Comments)
-            .ThenInclude(c => c.BlogUser)
-            .FirstOrDefaultAsync(m => m.Slug == slug);
-            //ViewData["PostId"] = post.Id;
-            //ViewData["Title"] = post.Title;
-            //ViewData["Content"] = post.Content;
+                .Include(p => p.BlogUser)
+                .Include(p => p.Tags)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.BlogUser)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.Moderator)
+                .FirstOrDefaultAsync(m => m.Slug == slug);
 
             if (post == null)
             {
                 return NotFound();
             }
 
-            return View(post);
+            var dataVM = new PostDetailViewModel()
+            {
+                Post = post,
+                Tags = _context.Tags
+                .Select(t => t.Text.ToLower())
+                .Distinct().ToList()
+            };
+
+            ViewData["HeaderImage"] = _imageService.DecodeImage(post.ImageData, post.ContentType);
+            ViewData["MainText"] = post.Title;
+            ViewData["SubText"] = post.Abstract;
+
+            return View(dataVM);
         }
 
         //BlogPostIndex
         public async Task<IActionResult> BlogPostIndex(int? id, int? page)
         {
-            if(id is null)
+            if (id is null)
             {
                 return NotFound();
             }
@@ -122,14 +134,14 @@ namespace OttBlog23.Controllers
                 post.BlogUserId = authorId;
                 post.ImageData = await _imageService.EncodeImageAsync(post.Image);
                 post.ContentType = _imageService.ContentType(post.Image);
-                
+
                 #region  ***SLUGS*** (POST/CREATE) [START]
-                
+
                 var slug = _slugService.UrlFriendly(post.Title);
-                
+
                 //slug error
                 var validationError = false;
-                
+
 
                 if (string.IsNullOrEmpty(slug))
                 {
@@ -157,7 +169,7 @@ namespace OttBlog23.Controllers
                 _context.Add(post);
 
                 await _context.SaveChangesAsync();
-                
+
                 foreach (var tagText in tagValues)
                 {
                     _context.Add(new Tag()
@@ -209,7 +221,7 @@ namespace OttBlog23.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {                    
+                {
                     var newPost = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == post.Id);
 
                     newPost.Updated = DateTime.Now.ToUniversalTime();
@@ -220,7 +232,7 @@ namespace OttBlog23.Controllers
 
                     #region  ***SLUGS*** (POST/EDIT) [START]
                     var newSlug = _slugService.UrlFriendly(post.Title);
-                    if(newSlug != newPost.Slug)
+                    if (newSlug != newPost.Slug)
                     {
                         if (_slugService.IsUnique(newSlug))
                         {
@@ -244,9 +256,9 @@ namespace OttBlog23.Controllers
 
                     //remove all previously attached tags
                     _context.RemoveRange(newPost.Tags);
-                    
+
                     await _context.SaveChangesAsync();
-                    
+
                     foreach (var tagText in tagValues)
                     {
                         _context.Add(new Tag()

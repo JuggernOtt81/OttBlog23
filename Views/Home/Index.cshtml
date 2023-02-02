@@ -1,56 +1,190 @@
-﻿@using X.PagedList
+﻿@using OttBlog23.Services.Interfaces;
+@using X.PagedList
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Web.Common
+@using Microsoft.AspNetCore.Identity
 @using OttBlog23.Models
+@using OttBlog23.Services
+@using OttBlog23.Enums
+
+@inject IImageService _imageService
+@inject UserManager<BlogUser> _userManager
+
 @model IPagedList<Blog>
 
-@{
-    ViewData["Title"] = "Home Page";
-}
 
-<div class="container px-4 px-lg-5">
-    <div class="row gx-4 gx-lg-5 justify-content-center">
-        <div class="col-md-10 col-lg-8 col-xl-7">
-            @foreach (var blog in Model)
-            {
-                <div class="post-preview">
-                    <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
-                        <h2 class="post-title">
-                            @blog.Name
-                        </h2>
-                        <h3 class="post-subtitle">
-                            @blog.Description
-                        </h3>
-                    </a>
-                    <p class="post-meta">
-                        Author:
-                        <a href="#">@blog.BlogUser.FullName</a>
-                        on @blog.Created.ToString("MMM dd, yyyy")
-                    </p>
-                </div>
-            }
-        </div>
-    </div>
-</div>
-
-<p>
-    I am an ambitious and driven software developer, with a proven ability to solve complex problems and drive efficiencies for organizations. Despite my lack of professional experience, I have honed my skills in C# and JavaScript, as well as front-end technologies such as HTML, XAML, CSS, and frameworks like .NET Core, ASP.NET, Xamarin, Blazor, and MAUI. I am a quick learner and have a solid understanding of software development principles, as demonstrated by my successful completion of various projects. I am eager to bring my passion for technology and drive for excellence to a professional setting and to continue to grow as a developer. My ability to think creatively, my passion for efficiency, and my technical proficiency make me an ideal candidate to help your organization achieve its goals. I am confident that my skills and enthusiasm will be a valuable asset to your team.
-    <hr />
-    See my work samples here: <a href="https://www.JuggernOtt81.com" target="_blank">www.JuggernOtt81.com</a>
-</p>
 
 
 <div class="row">
-    <div class="col h3">
+    @foreach (var blog in Model)
+    {
+        <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
+            <div class="card border-dark">
+                <img class="card-img-top" src="@_imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
+                <div class="card-body text-center">
+
+                    <div class="bg-warning">
+                        <hr class="card-hr" />
+                        <h5 class="card-title">@blog.Name</h5>
+                        <hr class="card-hr" />
+                    </div>
+                    <div>
+                        <p class="card-text cftooltip" data-bs-toggle="tooltip" data-placement="top"
+                       title=""
+                       data-original-title="@blog.Description">@blog.Description</p>
+                    </div>
+                    <br>
+                    <div class="text-center">
+                        <a class="btn btn-dark btn-sm note-btn-block mb-3" asp-action="BlogPostIndex" asp-action="Posts" asp-route-id="@blog.Id">
+                            Read Posts
+                        </a>
+                    </div>
+
+                    @if (User.IsInRole(BlogRole.Administrator.ToString()))
+                    {
+                        <div class="row">
+                            <div class="text-center col">
+                                <a class="btn btn-dark btn-sm note-btn-block mb-2" asp-action="Create" asp-controller="Posts" asp-route-id="@blog.Id">Create Post</a>
+                            </div>
+                            <div class="text-center col">
+                                <a class="btn btn-dark btn-sm note-btn-block mb-2" asp-action="Edit" asp-controller="Blogs" asp-route-id="@blog.Id">Edit Blog</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<hr />
+
+<div class="row">
+    <div class=" col h3">
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
     </div>
 </div>
+
 <div class="row">
-    <div class="col h3">
-        @Html.PagedListPager(Model, page => Url.Action("Index", new {page = page}),
-        new PagedListRenderOptions{
-            LiElementClasses = new string[] {"page-item"},
-            PageClasses = new string[] {"page-link"}
+    <div class="col">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+        new PagedListRenderOptions
+        {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }
         })
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        var swalMsg = '@TempData["SweetAlert"]'
+        if (swalMsg) {
+            Swal.fire({
+                icon: 'success',
+                title: swalMsg,
+                timer: 3000
+            })
+        }
+
+        $(document).ready(function () {
+            $("p").tooltip();
+        });
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*@{
+    ViewData["Title"] = "Home Page";
+}*@
+
+@*<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+    <div class="col-md-10 col-lg-8 col-xl-7">
+    @foreach (var blog in Model)
+    {
+    <div class="post-preview">
+    <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
+    <h2 class="post-title">
+    @blog.Name
+    </h2>
+    <h3 class="post-subtitle">
+    @blog.Description
+    </h3>
+    </a>
+    <p class="post-meta">
+    Author:
+    <a href="#">@blog.BlogUser.FullName</a>
+    on @blog.Created.ToString("MMM dd, yyyy")
+    </p>
+    </div>
+    }
+    </div>
+    </div>
+    </div>
+
+    <div class="row">
+    <div class="col h3">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    </div>
+    </div>
+    <div class="row">
+    <div class="col h3">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new {page = page}),
+    new PagedListRenderOptions{
+    LiElementClasses = new string[] {"page-item"},
+    PageClasses = new string[] {"page-link"}
+    })
+    </div>
+    </div>*@
