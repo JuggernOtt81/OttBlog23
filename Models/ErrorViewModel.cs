@@ -1,4 +1,4 @@
-namespace OttBlog23.Models
+﻿namespace OttBlog23.Models
 {
     public class ErrorViewModel
     {
