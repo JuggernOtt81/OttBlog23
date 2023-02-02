@@ -94,23 +94,48 @@ namespace OttBlog23.Controllers
             return View(dataVM);
         }
 
-        //BlogPostIndex
+        ////BlogPostIndex
+        //public async Task<IActionResult> BlogPostIndex(int? id, int? page)
+        //{
+        //    if (id is null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var pageNumber = page ?? 1;
+        //    var pageSize = 3;
+
+        //    var posts = _context.Posts
+        //        .Where(p => p.BlogId == id && p.ReadyStatus == ReadyStatus.ProductionReady)
+        //        .OrderByDescending(p => p.Created)
+        //        .ToPagedListAsync(pageNumber, pageSize);
+
+        //    return View(await posts);
+        //}
+
+        // Blog Post Index
+        [AllowAnonymous]
         public async Task<IActionResult> BlogPostIndex(int? id, int? page)
         {
-            if (id is null)
-            {
-                return NotFound();
-            }
+            if (id is null) return NotFound();
 
             var pageNumber = page ?? 1;
-            var pageSize = 3;
+            var pageSize = 2;
 
-            var posts = _context.Posts
+            var posts = await _context.Posts
                 .Where(p => p.BlogId == id && p.ReadyStatus == ReadyStatus.ProductionReady)
                 .OrderByDescending(p => p.Created)
                 .ToPagedListAsync(pageNumber, pageSize);
 
-            return View(await posts);
+            var blog = await _context.Blogs
+               .FindAsync(id);
+
+
+            ViewData["MainText"] = blog.Name;
+            ViewData["SubText"] = blog.Description;
+
+            return View(posts);
+
         }
 
         // GET: Posts/Create

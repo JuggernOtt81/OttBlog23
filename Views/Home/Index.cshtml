@@ -20,7 +20,7 @@
     {
         <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
             <div class="card border-dark">
-                <img class="card-img-top" src="@_imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
+                <img class="card-img-top cropped-for-blog-index" src="@_imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
                 <div class="card-body text-center">
 
                     <div class="bg-warning">
@@ -35,7 +35,7 @@
                     </div>
                     <br>
                     <div class="text-center">
-                        <a class="btn btn-dark btn-sm note-btn-block mb-3" asp-action="BlogPostIndex" asp-action="Posts" asp-route-id="@blog.Id">
+                        <a class="btn btn-dark btn-sm note-btn-block mb-3" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@blog.Id">
                             Read Posts
                         </a>
                     </div>

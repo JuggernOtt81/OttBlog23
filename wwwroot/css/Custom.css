@@ -12,3 +12,19 @@ div.swal2-container.sawl2-center.swal2-backdrop-show > div{
     border: 2px solid #ff993b;
 }
 
+.cropped-for-blog-index {
+    padding: 20px;
+    object-fit:fill;
+    height: 250px;
+    max-width: 500px;
+    /*object-position: center center;*/
+}
+
+.cropped-for-posts-index {
+    padding: 20px;
+    object-fit: fill;
+    height: 250px;
+    max-width: 500px;
+    /*object-position: center center;*/
+}
+
