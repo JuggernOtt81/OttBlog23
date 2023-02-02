@@ -4,7 +4,7 @@
 @Html.EJS().ScriptManager()
 <div class="container">
     <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="col-lg-8 col-md-10 mx-auto" style="background-color:whitesmoke">
             <p>Want to get in touch? Fill out the form below to send me a message and I will get back to you as soon as possible!</p>
             <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
             <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
@@ -55,33 +55,30 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <div class="form-group floating-label-form-group controls">
-                        <label asp-for="Message">Message</label>
+                    <label asp-for="Message">Message</label>
+                    <div class="form-group floating-label-form-group controls" style="background-color: white">
+                        
                         <textarea asp-for="Message"
                                   class="form-control"
                                   placeholder="We would like to hire you for an exciting new project!"
                                   required data-validation-required-message="Please enter a message."></textarea>
-                        <p class="help-block text-danger"></p>
+
                     </div>
-                </div>
-
-                <br>
-
-
-                <div id="success"></div>
-
-                <button type="submit" class="btn btn-primary" id="sendMessageButton">Send</button>
+                    <hr>
+                    <button type="submit" class="btn btn-primary note-btn-block" id="sendMessageButton">Send</button>
+                    <hr />
+                </div>                
             </form>
         </div>
     </div>
 </div>
 
 @section Scripts {
-            <script>
-                $('#Message').summernote({
-                    placeholder: "We would like to hire you for an exciting new project!"
-                });
-            </script>
+    <script>
+        $('#Message').summernote({
+            placeholder: "We would like to hire you for an exciting new project!"
+        });
+    </script>
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
