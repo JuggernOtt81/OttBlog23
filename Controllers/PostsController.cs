@@ -137,6 +137,9 @@ namespace OttBlog23.Controllers
         {
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["HeaderImage"] = "/img/post-bg.jpg";
+            ViewData["MainText"] = "Create New Post";
+            ViewData["SubText"] = "Make something AWESOME!";
             return View();
         }
 
@@ -224,6 +227,9 @@ namespace OttBlog23.Controllers
             }
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             ViewData["TagValues"] = string.Join(",", post.Tags.Select(t => t.Text));
+            ViewData["HeaderImage"] = "/img/post-bg.jpg";
+            ViewData["MainText"] = "Edit Post";
+            ViewData["SubText"] = "Make some changes.";
             return View(post);
         }
 
@@ -323,7 +329,9 @@ namespace OttBlog23.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["HeaderImage"] = "/img/post-bg.jpg";
+            ViewData["MainText"] = "DELETE POST";
+            ViewData["SubText"] = "Was this one not worthy?";
             return View(post);
         }
 

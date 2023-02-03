@@ -63,6 +63,9 @@ namespace OttBlog23.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
+            ViewData["HeaderImage"] = "/img/about-bg.jpg";
+            ViewData["MainText"] = "Create Blog";
+            ViewData["SubText"] = $"Interesting Topic";
             return View();
         }
 
