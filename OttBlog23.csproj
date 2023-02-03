@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="wwwroot\assets\favicon.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\Home\Privacy.cshtml" />
     <None Include="wwwroot\js\site.js" />
