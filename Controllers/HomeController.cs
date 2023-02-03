@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using X.PagedList;
 using OttBlog23.Services;
 using OttBlog23.Enums;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace OttBlog23.Controllers
 {
@@ -39,12 +40,14 @@ namespace OttBlog23.Controllers
             var pageNumber = page ?? 1;
             var pageSize = 3;
 
-            //var blogs = _context.Blogs.Where(b => b.Posts.Any(p => p.ReadyStatus == Enums.ReadyStatus.ProductionReady)).OrderByDescending(b => b.Created).ToPagedListAsync(pageNumber, pageSize);
-
             var blogs = _context.Blogs
                 .Include(b => b.BlogUser)
                 .OrderByDescending(b => b.Created)
                 .ToPagedListAsync(pageNumber, pageSize);
+
+            ViewData["HeaderImage"] = "/img/home-bg.jpg";
+            ViewData["MainText"] = "Lawson's Blog";
+            ViewData["SubText"] = "A practical example of programming in ASP.NET MVC";
 
             return View(await blogs);
         }
@@ -74,6 +77,10 @@ namespace OttBlog23.Controllers
              "EditImageLink", "RemoveImageLink", "Display", "AltText", "Dimension",tools1
              , tools2
              };
+
+            ViewData["HeaderImage"] = "/img/contact-bg.jpg";
+            ViewData["MainText"] = "Get in touch!";
+            ViewData["SubText"] = $"This form works, but does not deliver to my primary inbox. \r\nHowever, to truly get my attention, use the links in the footer.";
             return View();
         }
 

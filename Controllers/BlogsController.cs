@@ -32,6 +32,11 @@ namespace OttBlog23.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Blogs.Include(b => b.BlogUser);
+
+            ViewData["HeaderImage"] = "/img/about-bg.jpg";
+            ViewData["MainText"] = "Blogs";
+            ViewData["SubText"] = $"Click through to find posts in each topic.";
+
             return View(await applicationDbContext.ToListAsync());
         }
 

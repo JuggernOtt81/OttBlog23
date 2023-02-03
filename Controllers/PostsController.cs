@@ -50,10 +50,21 @@ namespace OttBlog23.Controllers
         }
 
         // GET: Posts
-        public async Task<IActionResult> Index()
+        //getting all the posts and displaying them unattached from the blogs they belong to
+        [AllowAnonymous]
+        public IActionResult Index(int? page)
         {
-            var applicationDbContext = _context.Posts.Include(p => p.Blog).Include(p => p.BlogUser);
-            return View(await applicationDbContext.ToListAsync());
+            var posts = _context.Posts;
+
+            var pageNumber = page ?? 1;
+            var pageSize = 3;
+
+            ViewData["HeaderImage"] = "/img/post-bg.jpg";
+            ViewData["MainText"] = "Lawson's Posts";
+            ViewData["SubText"] = "All the posts with pagination (blog/topic agnostic)";
+
+            return View(posts.ToPagedList(pageNumber, pageSize));
+
         }
 
         // GET: Posts/Details/5
@@ -94,27 +105,9 @@ namespace OttBlog23.Controllers
             return View(dataVM);
         }
 
-        ////BlogPostIndex
-        //public async Task<IActionResult> BlogPostIndex(int? id, int? page)
-        //{
-        //    if (id is null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var pageNumber = page ?? 1;
-        //    var pageSize = 3;
-
-        //    var posts = _context.Posts
-        //        .Where(p => p.BlogId == id && p.ReadyStatus == ReadyStatus.ProductionReady)
-        //        .OrderByDescending(p => p.Created)
-        //        .ToPagedListAsync(pageNumber, pageSize);
-
-        //    return View(await posts);
-        //}
-
-        // Blog Post Index
-        [AllowAnonymous]
+        //Blog Post Index
+        //per selected blog/topic, these are all the posts under that
+       [AllowAnonymous]
         public async Task<IActionResult> BlogPostIndex(int? id, int? page)
         {
             if (id is null) return NotFound();
@@ -133,7 +126,8 @@ namespace OttBlog23.Controllers
 
             ViewData["MainText"] = blog.Name;
             ViewData["SubText"] = blog.Description;
-
+            ViewData["HeaderImage"] = _imageService.DecodeImage(blog.ImageData, blog.ContentType);
+            
             return View(posts);
 
         }

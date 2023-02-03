@@ -33,6 +33,10 @@
                         <li class="nav-item col" style=" padding-left:15px; padding-right:15px;">
                             <a class="nav-link text-dark text-center" asp-area="" asp-controller="Blogs" asp-action="Index">List-Blogs</a>
                         </li>
+                        
+                        <li class="nav-item col" style=" padding-left:15px; padding-right:15px;">
+                            <a class="nav-link text-dark text-center" asp-area="" asp-controller="Posts" asp-action="Index" asp-route-id=1>View-Posts</a>
+                        </li>
                         <li class="nav-item col" style=" padding-left:15px; padding-right:15px;">
                             <a class="nav-link text-dark text-center" asp-area="" asp-controller="Blogs" asp-action="Create">New-Blog</a>
                         </li>
@@ -45,8 +49,11 @@
                     }
                     else
                     {
-                        <li class="nav-item col" style=" padding-left:15px; padding-right:15px;">
+@*                        <li class="nav-item col" style=" padding-left:15px; padding-right:15px;">
                             <a class="nav-link text-dark text-center" asp-area="" asp-controller="Blogs" asp-action="Index">Blogs-Index</a>
+                        </li>*@
+                        <li class="nav-item col" style=" padding-left:15px; padding-right:15px;">
+                            <a class="nav-link text-dark text-center" asp-area="" asp-controller="Posts" asp-action="Index" asp-route-id=1>View-Posts</a>
                         </li>
                         <li class="nav-item col" style=" padding-left:15px; padding-right:15px;">
                             <a class="nav-link text-dark text-center" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
