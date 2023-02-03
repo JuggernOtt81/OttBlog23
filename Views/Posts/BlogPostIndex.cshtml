@@ -75,9 +75,22 @@
 </div>
 
 
+@section Scripts {
+    <script>
+        var swalMsg = '@TempData["SweetAlert"]'
+        if (swalMsg) {
+            Swal.fire({
+                icon: 'success',
+                title: swalMsg,
+                timer: 3000
+            })
+        }
+        $(document).ready(function () {
+            $("p").tooltip();
+        });
+    </script>
 
-
-
+};
 
 
 

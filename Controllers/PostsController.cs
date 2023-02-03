@@ -113,7 +113,7 @@ namespace OttBlog23.Controllers
             if (id is null) return NotFound();
 
             var pageNumber = page ?? 1;
-            var pageSize = 2;
+            var pageSize = 3;
 
             var posts = await _context.Posts
                 .Where(p => p.BlogId == id && p.ReadyStatus == ReadyStatus.ProductionReady)

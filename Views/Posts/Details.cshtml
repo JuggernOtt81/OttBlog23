@@ -147,7 +147,7 @@
                 @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUser.FullName == userManager.GetUserId(User))
                 {
                     <hr>
-                    <button data-toggle="modal" data-target="#editModal" class="btn-sm btn-dark float-right font-weight-bold">EDIT</button>
+                    <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn-sm btn-dark float-right font-weight-bold">EDIT</button>
                 }
 
 
@@ -156,7 +156,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-2">
-                            <button class="btn-sm btn-dark font-weight-bold btn-block" data-toggle="modal" data-target="#moderate">MODERATE</button>
+                            <button class="btn-sm btn-dark font-weight-bold btn-block" data-bs-toggle="modal" data-bs-target="#moderate">MODERATE</button>
                         </div>
                         <div class="col-2">
                             <form asp-action="Delete" asp-controller="Comments">
@@ -197,7 +197,7 @@
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn-sm btn-dark font-weight-bold" data-dismiss="modal">CLOSE</button>
+                        <button type="button" class="btn-sm btn-dark font-weight-bold" data-bs-dismiss="modal">CLOSE</button>
                     </div>
 
                 </div>
@@ -241,7 +241,7 @@
                                         <button class="btn-sm btn-block btn-dark border-success font-weight-bold" type="submit">SUBMIT</button>
                                     </div>
                                     <div class="col">
-                                        <button class="btn-sm btn-block btn-dark font-weight-bold" type="button" data-dismiss="modal">CLOSE</button>
+                                        <button class="btn-sm btn-block btn-dark font-weight-bold" type="button" data-bs-dismiss="modal">CLOSE</button>
                                     </div>
                                 </div>
                             </div>
@@ -253,10 +253,4 @@
         </div>
     }
 </div>
-
-
-
-
-
-
 

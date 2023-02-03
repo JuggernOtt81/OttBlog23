@@ -92,9 +92,9 @@ namespace OttBlog23.Services
             {
                 Email = "lawsonott3@gmail.com",
                 UserName = "lawsonott3@gmail.com",
-                FirstName = "Lawson",
-                LastName = "Ott",
-                DisplayName = "lawsonott3",
+                FirstName = "Mod",
+                LastName = "Squad",
+                DisplayName = "Moderator",
                 PhoneNumber = "(800) 867-5309",
                 EmailConfirmed = true,
                 ImageData = await _imageService.EncodeImageAsync(_configuration["DefaultUserImage"]),
