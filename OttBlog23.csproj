@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+	  <Nullable>enable</Nullable>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <BaseOutputPath>bin</BaseOutputPath>
+	  <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	  <InvariantGlobalization>true</InvariantGlobalization>
     <UserSecretsId>aspnet-OttBlog23-11da354e-e41a-46a0-ba2f-27b2b60b8915</UserSecretsId>
   </PropertyGroup>
 
