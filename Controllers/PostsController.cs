@@ -45,7 +45,9 @@ namespace OttBlog23.Controllers
             var pageSize = 3;
 
             var posts = _blogSearchService.Search(SearchTerm);
-
+            ViewData["MainText"] = SearchTerm.ToUpper();
+            ViewData["SubText"] = $"all results found with '{SearchTerm.ToLower()}'";
+            ViewData["HeaderImage"] = "/img/searches.jpg";
             return View(await posts.ToPagedListAsync(pageNumber, pageSize));
         }
 
@@ -107,7 +109,7 @@ namespace OttBlog23.Controllers
 
         //Blog Post Index
         //per selected blog/topic, these are all the posts under that
-       [AllowAnonymous]
+        [AllowAnonymous]
         public async Task<IActionResult> BlogPostIndex(int? id, int? page)
         {
             if (id is null) return NotFound();
@@ -127,9 +129,28 @@ namespace OttBlog23.Controllers
             ViewData["MainText"] = blog.Name;
             ViewData["SubText"] = blog.Description;
             ViewData["HeaderImage"] = _imageService.DecodeImage(blog.ImageData, blog.ContentType);
-            
+
             return View(posts);
 
+        }
+
+        //Tag Index
+        //per selected blog/topic, these are all the posts under that
+        [AllowAnonymous]
+        public async Task<IActionResult> TagIndex(string tag, int? page)
+        {
+            var pageNumber = page ?? 1;
+            var pageSize = 5;
+
+            var allPostIds = _context.Tags.Where(t => t.Text == tag).Select(t => t.PostId);
+            var posts = _context.Posts.Where(p => allPostIds
+                .Contains(p.Id))
+                .OrderByDescending(t => t.Created)
+                .ToPagedListAsync(page, pageSize);
+            ViewData["MainText"] = tag.ToUpper();
+            ViewData["SubText"] = $"all posts tagged with '{tag.ToLower()}'";
+            ViewData["HeaderImage"] = "/img/tags.png";
+            return View("BlogPostIndex", await posts);
         }
 
         // GET: Posts/Create
@@ -142,6 +163,8 @@ namespace OttBlog23.Controllers
             ViewData["SubText"] = "Make something AWESOME!";
             return View();
         }
+
+
 
         // POST: Posts/Create
         [HttpPost]
@@ -312,6 +335,14 @@ namespace OttBlog23.Controllers
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", post.BlogUserId);
             return View(post);
         }
+
+
+
+
+
+
+
+
 
         // GET: Posts/Delete/5
         public async Task<IActionResult> Delete(int? id)

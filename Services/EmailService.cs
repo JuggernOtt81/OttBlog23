@@ -32,7 +32,7 @@ namespace OttBlog23.Services
             newEmail.Subject = subject;
 
             var builder = new BodyBuilder();
-            builder.HtmlBody = $"<b>{name}</b> has sent you an newEmail and can be reached at: <b>{_mailSettings.Mail}</b><br/><br/>{message}";
+            builder.HtmlBody = $"<b>{name}</b> has sent you an new email. and can be reached at: <b>{email}</b><br/><br/>{message}";
 
             newEmail.Body = builder.ToMessageBody();
 

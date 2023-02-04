@@ -1,4 +1,4 @@
-﻿@*blog post index*@
+﻿@*tag-post index*@
 
 @using Microsoft.AspNetCore.Identity;
 @using X.PagedList
@@ -12,7 +12,6 @@
 @inject UserManager<BlogUser> userManager
 @inject IImageService imageService
 @model IPagedList<Post>
-
 
 <div class="row">
     @foreach (var post in Model)
