@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OttBlog23.Data;
+using OttBlog23.Helpers;
 using OttBlog23.Models;
 using OttBlog23.Services;
 using OttBlog23.Services.Interfaces;
@@ -34,9 +35,11 @@ namespace OttBlog23
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseNpgsql(
+            //        Configuration["ConnectionStrings:DefaultConnection"]));
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(
-                    Configuration["ConnectionStrings:DefaultConnection"]));
+    options.UseNpgsql(ConnectionHelper.GetConnectionString(Configuration["ConnectionStrings:DefaultConnection"], Environment.GetEnvironmentVariable("DATABASE_URL"))));
 
             services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddDefaultUI()

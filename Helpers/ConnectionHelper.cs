@@ -20,6 +20,7 @@ namespace OttBlog23.Helpers
             //var connectionString = configuration.GetConnectionString("DefaultConnection");
             //var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
             return string.IsNullOrEmpty(databaseUrl) ? connectionString : BuildConnectionString(databaseUrl);
+
         }
     
         //build the connection string from the environment. i.e. Heroku
