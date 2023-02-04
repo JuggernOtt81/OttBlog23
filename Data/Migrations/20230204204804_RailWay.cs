@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace OttBlog23.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class _9001 : Migration
+    public partial class RailWay : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

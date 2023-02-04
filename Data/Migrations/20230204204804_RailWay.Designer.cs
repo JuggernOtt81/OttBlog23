@@ -12,8 +12,8 @@ using OttBlog23.Data;
 namespace OttBlog23.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230203163957_9001")]
-    partial class _9001
+    [Migration("20230204204804_RailWay")]
+    partial class RailWay
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

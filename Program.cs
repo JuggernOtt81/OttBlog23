@@ -20,7 +20,8 @@ namespace OttBlog23
         {
 
             var host = CreateHostBuilder(args).UseContentRoot(Directory.GetCurrentDirectory()).Build();
-
+            var scope = host.Services.CreateScope();
+            await DataHelper.ManageDataAsync(scope.ServiceProvider);
 
             var dataService = host.Services.CreateScope().ServiceProvider
                                            .GetRequiredService<DataService>();
