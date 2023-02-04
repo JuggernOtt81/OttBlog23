@@ -14,6 +14,7 @@ using OttBlog23.Models;
 using OttBlog23.Services;
 using OttBlog23.Services.Interfaces;
 using OttBlog23.ViewModels;
+using Syncfusion.DocIO.DLS;
 
 
 namespace OttBlog23.Controllers
@@ -63,12 +64,20 @@ namespace OttBlog23.Controllers
                 comment.BlogUserId = _userManager.GetUserId(User);
                 comment.Created = DateTime.Now.ToUniversalTime();
                 _context.Add(comment);
+                
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
 
+                comment = await _context.Comments
+                .Include(c => c.Post)
+                .Where(c => c.Id == comment.Id)
+                .FirstOrDefaultAsync();
+
+                if (comment is null) return NotFound();
+
+                
             }
-            return View(comment);
-
+            //return View(comment);
+            return RedirectToAction("Details", "Posts", new { comment.Post.Slug }, "commentSection");
         }
 
 
@@ -168,6 +177,7 @@ namespace OttBlog23.Controllers
 
 
         // GET: Comments/Delete/5
+        [AllowAnonymous]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Comments == null)
@@ -189,14 +199,14 @@ namespace OttBlog23.Controllers
         }
 
         // POST: Comments/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id, string slug)
+        public async Task<IActionResult> Delete(int id, string slug)
         {
             var comment = await _context.Comments.FindAsync(id);
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details", "Posts", new {slug}, "commentSection");
+            return RedirectToAction("Details", "Posts", new { slug }, "commentSection");
         }
 
         private bool CommentExists(int id)
