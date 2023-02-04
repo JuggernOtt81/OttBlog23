@@ -14,7 +14,6 @@ using Microsoft.Extensions.Logging;
 using OttBlog23.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Syncfusion.JavaScript.Models;
 using MailKit.Search;
 
 namespace OttBlog23.Areas.Identity.Pages.Account
