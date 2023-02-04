@@ -103,6 +103,9 @@ namespace OttBlog23.Controllers
                 return NotFound();
             }
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", blog.BlogUserId);
+            ViewData["MainText"] = blog.Name;
+            ViewData["SubText"] = blog.Description;
+            ViewData["HeaderImage"] = _imageService.DecodeImage(blog.ImageData, blog.ContentType);
             return View(blog);
         }
 

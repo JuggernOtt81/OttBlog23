@@ -12,6 +12,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using OttBlog23.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Syncfusion.JavaScript.Models;
+using MailKit.Search;
 
 namespace OttBlog23.Areas.Identity.Pages.Account
 {
@@ -68,7 +72,9 @@ namespace OttBlog23.Areas.Identity.Pages.Account
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
+            ViewData["MainText"] = "LOGIN";
+            ViewData["SubText"] = "login is required for advanced functions";
+            ViewData["HeaderImage"] = "/img/login.jpg";
             ReturnUrl = returnUrl;
         }
 

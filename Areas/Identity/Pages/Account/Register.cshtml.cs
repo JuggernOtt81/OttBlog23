@@ -91,6 +91,9 @@ namespace OttBlog23.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ViewData["MainText"] = "REGISTER";
+            ViewData["SubText"] = "register to comment on posts";
+            ViewData["HeaderImage"] = "/img/register.jpg";
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)

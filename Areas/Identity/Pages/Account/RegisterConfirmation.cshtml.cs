@@ -56,7 +56,9 @@ namespace OttBlog23.Areas.Identity.Pages.Account
                     values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                     protocol: Request.Scheme);
             }
-
+            ViewData["MainText"] = "SUCCESS!";
+            ViewData["SubText"] = "You have successfully registered. Please check your email for a confirmation link.";
+            ViewData["HeaderImage"] = "/img/success1.jpeg";
             return Page();
         }
     }
