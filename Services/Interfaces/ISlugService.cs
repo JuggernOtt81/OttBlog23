@@ -1,6 +1,4 @@
-﻿using OttBlog23.ViewModels;
-
-namespace OttBlog23.Services.Interfaces
+﻿namespace OttBlog23.Services.Interfaces
 {
     public interface ISlugService
     {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,8 +8,8 @@ using OttBlog23.Enums;
 using OttBlog23.Models;
 using OttBlog23.Services;
 using OttBlog23.Services.Interfaces;
-using X.PagedList;
 using OttBlog23.ViewModels;
+using X.PagedList;
 
 namespace OttBlog23.Controllers
 {

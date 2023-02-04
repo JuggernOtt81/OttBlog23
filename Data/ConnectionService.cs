@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Npgsql;
-using System;
+﻿using Npgsql;
 
 namespace OttBlog23.Data
 {

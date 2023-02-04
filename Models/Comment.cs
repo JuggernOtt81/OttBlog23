@@ -1,7 +1,5 @@
 ﻿using OttBlog23.Enums;
-using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
-using System;
 
 namespace OttBlog23.Models
 {
@@ -32,7 +30,7 @@ namespace OttBlog23.Models
         [DataType(DataType.Date)]
         [Display(Name = "Deleted on: ")]
         public DateTime? Deleted { get; set; }
-        
+
         [StringLength(500, ErrorMessage = "The {0} of the comment must be at least {2} and at most {1} characters in length.", MinimumLength = 2)]
         [Display(Name = "Moderated Comment")]
         public string? ModeratedBody { get; set; }
@@ -41,7 +39,7 @@ namespace OttBlog23.Models
 
         //Navigation Properties
         public virtual Post? Post { get; set; }
-        [Display(Name = "Author: ")]        
+        [Display(Name = "Author: ")]
         public virtual BlogUser? BlogUser { get; set; }
         public virtual BlogUser? Moderator { get; set; }
     }

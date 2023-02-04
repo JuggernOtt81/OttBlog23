@@ -8,7 +8,7 @@ namespace OttBlog23.ViewModels
         [StringLength(50, ErrorMessage = "The {0} of the sender must be at least {2} and at most {1} characters in length.", MinimumLength = 2)]
         public string? Name { get; set; }
         [Required]
-        [EmailAddress (ErrorMessage = "The {0} address must be a VALID email address.")]
+        [EmailAddress(ErrorMessage = "The {0} address must be a VALID email address.")]
         public string? Email { get; set; }
         [Required]
         [Phone(ErrorMessage = "Please enter a valid phone number")]

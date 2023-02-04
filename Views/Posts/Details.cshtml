@@ -15,7 +15,7 @@
 
 @{
     var counter = 0;
-    var USA = new CultureInfo("en-US");
+    //var USA = new CultureInfo("en-US");
 }
 <article>
     <div class="row">
@@ -113,7 +113,7 @@
                 }
                 else
                 {
-                    <span class="small"><span class="font-weight-bolder">Created</span>: @comment.Created.Value.ToString("MMM dd, yyyy", USA)</span>
+                    <span class="small"><span class="font-weight-bolder">Created</span>: @comment.Created.Value.ToString("MMM dd, yyyy")</span>
                 }
 
                 
@@ -122,11 +122,11 @@
                 {
                     @Html.Hidden("Id", comment.Id)
                     @Html.Hidden("Slug", comment.Post.Slug)
-                    <span class="small font-italic">The comment posted on @comment.Created.Value.ToString("MMM dd, yyyy", USA) by @comment.BlogUser.FullName was deleted by the Moderator...</span>
+                    <span class="small font-italic">The comment posted on @comment.Created.Value.ToString("MMM dd, yyyy") by @comment.BlogUser.FullName was deleted by the Moderator...</span>
                 }
                 else if (comment.Moderated is not null)
                 {
-                    <span class="small font-italic">The comment posted on @comment.Created.Value.ToString("MMM dd, yyyy", USA) by @comment.BlogUser.FullName has been Moderated...</span>
+                    <span class="small font-italic">The comment posted on @comment.Created.Value.ToString("MMM dd, yyyy") by @comment.BlogUser.FullName has been Moderated...</span>
                 }
 
                 <hr />

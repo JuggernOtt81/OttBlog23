@@ -1,10 +1,6 @@
 ﻿using OttBlog23.Enums;
-using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System;
-using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 
 namespace OttBlog23.Models
 {
@@ -12,7 +8,7 @@ namespace OttBlog23.Models
     {
         public int Id { get; set; }
         [Display(Name = "Blog Name")]
-        public int BlogId { get; set; }        
+        public int BlogId { get; set; }
         public string? BlogUserId { get; set; }
 
         [Required]
@@ -49,7 +45,7 @@ namespace OttBlog23.Models
 
         //Navigation Properties
         public virtual Blog? Blog { get; set; }
-        [Display(Name = "Author: ")]        
+        [Display(Name = "Author: ")]
         public virtual BlogUser? BlogUser { get; set; }
         public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
         public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();

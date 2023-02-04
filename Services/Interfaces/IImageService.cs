@@ -1,11 +1,4 @@
-﻿
-using OttBlog23.ViewModels;
-using OttBlog23.Services;
-using OttBlog23.Services.Interfaces;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-
-namespace OttBlog23.Services.Interfaces
+﻿namespace OttBlog23.Services.Interfaces
 {
     public interface IImageService
     {

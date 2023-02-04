@@ -1,18 +1,9 @@
-﻿using OttBlog23.Data;
-using OttBlog23.Models;
-using OttBlog23.Enums;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Configuration;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using OttBlog23.ViewModels;
-using OttBlog23.Services;
+using OttBlog23.Data;
+using OttBlog23.Enums;
+using OttBlog23.Models;
 using OttBlog23.Services.Interfaces;
-using System.IO;
-using Microsoft.Extensions.Configuration;
 
 namespace OttBlog23.Services
 {
@@ -30,7 +21,7 @@ namespace OttBlog23.Services
             _roleManager = roleManager;
             _userManager = userManager;
             _imageService = imageService;
-            _configuration= configuration;
+            _configuration = configuration;
         }
 
         public async Task ManageDataAsync()

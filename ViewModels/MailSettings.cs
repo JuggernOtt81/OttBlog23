@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-
-namespace OttBlog23.ViewModels
+﻿namespace OttBlog23.ViewModels
 {
     public class MailSettings
     {

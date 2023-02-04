@@ -61,4 +61,8 @@
     <PackageReference Include="X.PagedList.Web.Common" Version="8.0.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\RichTextEditor\" />
+  </ItemGroup>
+
 </Project>

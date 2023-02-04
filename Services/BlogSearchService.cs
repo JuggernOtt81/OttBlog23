@@ -1,13 +1,6 @@
-﻿using System.Linq;
-using OttBlog23.Data;
+﻿using OttBlog23.Data;
 using OttBlog23.Enums;
 using OttBlog23.Models;
-using OttBlog23.ViewModels;
-using OttBlog23.Services;
-using OttBlog23.Services.Interfaces;
-using System.Threading.Tasks;
-using System;
-using System.Collections.Generic;
 
 namespace OttBlog23.Services
 {
@@ -19,7 +12,7 @@ namespace OttBlog23.Services
         {
             _context = context;
         }
-        
+
         public IQueryable<Post> Search(string SearchTerm)
         {
             var posts = _context.Posts.Where(p => p.ReadyStatus == ReadyStatus.ProductionReady).AsQueryable();

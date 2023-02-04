@@ -1,15 +1,9 @@
-﻿using OttBlog23.ViewModels;
-using OttBlog23.Services;
-using OttBlog23.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
-using System.IO;
-using System.Threading.Tasks;
-using System;
+﻿using OttBlog23.Services.Interfaces;
 
 namespace OttBlog23.Services
 {
 
-public class BasicImageService : IImageService
+    public class BasicImageService : IImageService
     {
         public string DecodeImage(byte[] data, string type)
         {

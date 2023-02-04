@@ -1,8 +1,5 @@
-﻿using OttBlog23.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using System;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using OttBlog23.Data;
 
 namespace OttBlog23.Helpers
 {

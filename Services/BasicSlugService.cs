@@ -1,8 +1,6 @@
 ﻿using OttBlog23.Data;
-using System.Text;
-using OttBlog23.ViewModels;
 using OttBlog23.Services.Interfaces;
-using System.Linq;
+using System.Text;
 
 namespace OttBlog23.Services
 {
@@ -68,7 +66,7 @@ namespace OttBlog23.Services
                 if (sb.Length == maxlen) break;
             }
             if (prevdash)
-                return sb.ToString().Substring(0, sb.Length - 1);
+                return sb.ToString()[..(sb.Length - 1)];
             else
                 return sb.ToString();
         }
@@ -78,7 +76,7 @@ namespace OttBlog23.Services
             return !_context.Posts.Any(cp => cp.Slug == slug);
         }
 
-        private string RemapInternationalCharToAscii(char c)
+        private static string RemapInternationalCharToAscii(char c)
         {
             string s = c.ToString().ToLowerInvariant();
             if ("àåáâäãåą".Contains(s))

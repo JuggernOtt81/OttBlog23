@@ -1,6 +1,6 @@
-﻿using OttBlog23.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using OttBlog23.Models;
 
 namespace OttBlog23.Data
 {

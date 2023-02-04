@@ -1,21 +1,12 @@
-﻿using OttBlog23.Models;
-using OttBlog23.ViewModels;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using Microsoft.Extensions.Logging;
-using OttBlog23.Services.Interfaces;
-using OttBlog23.Data;
-using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using Microsoft.EntityFrameworkCore;
+using OttBlog23.Data;
+using OttBlog23.Models;
+using OttBlog23.Services.Interfaces;
+using OttBlog23.ViewModels;
+using System.Diagnostics;
 using X.PagedList;
-using OttBlog23.Services;
-using OttBlog23.Enums;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace OttBlog23.Controllers
 {

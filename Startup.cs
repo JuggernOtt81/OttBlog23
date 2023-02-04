@@ -1,10 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using OttBlog23.Data;
 using OttBlog23.Helpers;
 using OttBlog23.Models;
@@ -53,6 +48,7 @@ namespace OttBlog23
             services.AddScoped<IImageService, BasicImageService>();
             services.AddScoped<ISlugService, BasicSlugService>();
             services.AddScoped<BlogSearchService>();
+            //services.AddScoped<DataHelper>();
             //services.AddUserSecrets<Startup>();
 
         }
@@ -68,7 +64,7 @@ namespace OttBlog23
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -86,7 +82,7 @@ namespace OttBlog23
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                
+
 
                 endpoints.MapRazorPages();
             });

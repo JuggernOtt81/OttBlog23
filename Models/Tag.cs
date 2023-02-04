@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace OttBlog23.Models
 {
@@ -16,7 +15,7 @@ namespace OttBlog23.Models
 
         //Navigation Properties
         public virtual Post? Post { get; set; }
-        [Display(Name = "Author: ")]        
+        [Display(Name = "Author: ")]
         public virtual BlogUser? BlogUser { get; set; }
     }
 }
