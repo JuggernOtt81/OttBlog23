@@ -26,8 +26,8 @@ namespace OttBlog23.Services
         public async Task SendContactEmailAsync(string email, string name, string subject, string message)
         {
             var newEmail = new MimeMessage();
-            newEmail.Sender = MailboxAddress.Parse(_mailSettings.MailEmail);
-            newEmail.To.Add(MailboxAddress.Parse(_mailSettings.MailEmail));
+            newEmail.Sender = MailboxAddress.Parse(_mailSettings.Email);
+            newEmail.To.Add(MailboxAddress.Parse(_mailSettings.Email));
             newEmail.Subject = subject;
 
             var builder = new BodyBuilder();
@@ -37,7 +37,7 @@ namespace OttBlog23.Services
 
             using var smtp = new SmtpClient();
             smtp.Connect(_mailSettings.MailHost, _mailSettings.MailPort, SecureSocketOptions.StartTls);
-            smtp.Authenticate(_mailSettings.MailEmail, _mailSettings.MailPassword);
+            smtp.Authenticate(_mailSettings.Email, _mailSettings.MailPassword);
 
             await smtp.SendAsync(newEmail);
 
@@ -47,7 +47,7 @@ namespace OttBlog23.Services
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             var newEmail = new MimeMessage();
-            newEmail.Sender = MailboxAddress.Parse(_mailSettings.MailEmail);
+            newEmail.Sender = MailboxAddress.Parse(_mailSettings.Email);
             newEmail.To.Add(MailboxAddress.Parse(email));
             newEmail.Subject = subject;
 
@@ -60,7 +60,7 @@ namespace OttBlog23.Services
 
             using var smtp = new SmtpClient();
             smtp.Connect(_mailSettings.MailHost, _mailSettings.MailPort, SecureSocketOptions.StartTls);
-            smtp.Authenticate(_mailSettings.MailEmail, _mailSettings.MailPassword);
+            smtp.Authenticate(_mailSettings.Email, _mailSettings.MailPassword);
 
             await smtp.SendAsync(newEmail);
             smtp.Disconnect(true);
