@@ -13,7 +13,7 @@ namespace OttBlog23
             var dataService = host.Services.CreateScope().ServiceProvider
                                            .GetRequiredService<DataService>()
                                            .ManageDataAsync();
-
+            
 
             host.Run();
         }
