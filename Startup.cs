@@ -41,7 +41,7 @@ namespace OttBlog23
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddScoped<DataService>();
-            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.Configure<MailSettings>(Configuration);
             services.AddScoped<IBlogEmailSender, EmailService>();
             services.AddScoped<IImageService, BasicImageService>();
             services.AddScoped<ISlugService, BasicSlugService>();
