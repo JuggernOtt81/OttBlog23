@@ -15,14 +15,14 @@ namespace OttBlog23.Services.Interfaces
 {
     public interface IBlogEmailSender : IEmailSender
     {
-        var host = _mailSettings.MailHost ?? Environment.GetEnvironmentVariable("MailHost");
-        var port = _mailSettings.MailPort != 0 ? _mailSettings.MailPort : int.Parse(Environment.GetEnvironmentVariable("MailPort")!);
-        var password = _mailSettings.MailPassword ?? Environment.GetEnvironmentVariable("MailPassword");
+        //var host = _mailSettings.MailHost ?? Environment.GetEnvironmentVariable("MailHost");
+        //var port = _mailSettings.MailPort != 0 ? _mailSettings.MailPort : int.Parse(Environment.GetEnvironmentVariable("MailPort")!);
+        //var password = _mailSettings.MailPassword ?? Environment.GetEnvironmentVariable("MailPassword");
 
-        await smtpClient.ConnectAsync(host, port, SecureSocketOptions.StartTls);
-        await smtpClient.AuthenticateAsync(emailSender, password);
-        await smtpClient.SendAsync(newEmail);
-        await smtpClient.DisconnectAsync(true);
+        //await smtpClient.ConnectAsync(host, port, SecureSocketOptions.StartTls);
+        //await smtpClient.AuthenticateAsync(emailSender, password);
+        //await smtpClient.SendAsync(newEmail);
+        //await smtpClient.DisconnectAsync(true);
         Task SendContactEmailAsync(string email, string name, string subject, string message);
     }
 }
