@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using OttBlog23.Services.Interfaces;
 using OttBlog23.ViewModels;
+using System;
 //using Azure.Core;
 
 namespace OttBlog23.Services
@@ -12,15 +13,21 @@ namespace OttBlog23.Services
     {
         private readonly MailSettings _mailSettings;
 
-        //public EmailService(MailSettings mailSettings)
-        //{
-        //    _mailSettings = mailSettings;
-        //}
-
+        //public string railwayEmail = System.Environment.GetEnvironmentVariable("Email");
+        //public string railwayMailPort = System.Environment.GetEnvironmentVariable("MailPort");
+        //public string railwayMailPassword = System.Environment.GetEnvironmentVariable("MailPassword");
+        //public string railwayDisplayName = System.Environment.GetEnvironmentVariable("DisplayName");
+        //public string railwayMailHost = System.Environment.GetEnvironmentVariable("MailHost");
 
         public EmailService(IOptions<MailSettings> mailSettings)
         {
             _mailSettings = mailSettings.Value;
+
+            _mailSettings.Email = System.Environment.GetEnvironmentVariable("Email");
+            _mailSettings.MailPassword = System.Environment.GetEnvironmentVariable("MailPassword");
+            _mailSettings.DisplayName = System.Environment.GetEnvironmentVariable("DisplayName");
+            _mailSettings.MailHost = System.Environment.GetEnvironmentVariable("MailHost");
+            _mailSettings.MailPort = int.Parse(Environment.GetEnvironmentVariable("MailPort"));
         }
 
         public async Task SendContactEmailAsync(string email, string name, string subject, string message)
