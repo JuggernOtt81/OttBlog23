@@ -12,15 +12,14 @@ using OttBlog23.Data;
 namespace OttBlog23.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230204204804_RailWay")]
-    partial class RailWay
+    [Migration("20230205153548_Railway99")]
+    partial class Railway99
     {
-        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("ProductVersion", "6.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
