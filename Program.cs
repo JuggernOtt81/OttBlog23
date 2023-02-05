@@ -13,7 +13,9 @@ namespace OttBlog23
             var dataService = host.Services.CreateScope().ServiceProvider
                                            .GetRequiredService<DataService>()
                                            .ManageDataAsync();
-            
+
+            var emailService = host.Services.CreateScope().ServiceProvider
+                .GetRequiredService<EmailService>();
 
             host.Run();
         }
