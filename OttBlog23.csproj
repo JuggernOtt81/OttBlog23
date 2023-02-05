@@ -8,6 +8,7 @@
 	  <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	  <InvariantGlobalization>true</InvariantGlobalization>
     <UserSecretsId>aspnet-OttBlog23-11da354e-e41a-46a0-ba2f-27b2b60b8915</UserSecretsId>
+    <Configurations>Debug;Release;Railway</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
